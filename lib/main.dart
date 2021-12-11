@@ -14,9 +14,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme),
-      ),
+          textTheme: GoogleFonts.montserratTextTheme(Theme.of(context)
+              .textTheme
+              .copyWith(headline6: const TextStyle(fontWeight: FontWeight.w300))
+              .apply(
+                bodyColor: Colors.white,
+                displayColor: Colors.white,
+              ))),
       home: const HomePage(),
     );
   }
@@ -32,13 +38,65 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    var screen = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Welkom terug, Danny'),
+        title: Text('Hi! Danny', style: Theme.of(context).textTheme.headline5),
         elevation: 0,
         backgroundColor: kDefaultBackgroundColor,
+        actions: [
+          ClipOval(
+              child: Material(
+            color: kDefaultBackgroundColor, // Button color
+            child: InkWell(
+              splashColor: kPrimaryColor, // Splash color
+              onTap: () {},
+              child: const SizedBox(
+                width: 56,
+                height: 56,
+                child: Icon(Icons.face),
+              ),
+            ),
+          ))
+        ],
       ),
       backgroundColor: kDefaultBackgroundColor,
+      body: Container(
+          padding: const EdgeInsets.all(kDefaultPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Lopende cursus',
+                  style: Theme.of(context).textTheme.headline6),
+              Container(
+                margin: const EdgeInsets.only(top: kDefaultPadding),
+                height: 160,
+                width: screen.width,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(35),
+                    gradient: const LinearGradient(
+                        colors: [
+                          kPrimaryColor,
+                          kTertiaryColor,
+                        ],
+                        begin: FractionalOffset(0.0, 0.0),
+                        end: FractionalOffset(1.0, 0.0),
+                        stops: [0.0, 1.0],
+                        tileMode: TileMode.clamp)),
+                child: Container(
+                  padding: const EdgeInsets.all(kDefaultPadding * 1.5),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Verder gaan met je cursus?',
+                        style: Theme.of(context).textTheme.headline6,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          )),
     );
   }
 }

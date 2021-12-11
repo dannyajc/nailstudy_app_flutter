@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/widgets/expiry_indicator.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -69,31 +73,93 @@ class _HomePageState extends State<HomePage> {
               Text('Lopende cursus',
                   style: Theme.of(context).textTheme.headline6),
               Container(
-                margin: const EdgeInsets.only(top: kDefaultPadding),
-                height: 160,
                 width: screen.width,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(35),
-                    gradient: const LinearGradient(
-                        colors: [
-                          kPrimaryColor,
-                          kTertiaryColor,
-                        ],
-                        begin: FractionalOffset(0.0, 0.0),
-                        end: FractionalOffset(1.0, 0.0),
-                        stops: [0.0, 1.0],
-                        tileMode: TileMode.clamp)),
-                child: Container(
-                  padding: const EdgeInsets.all(kDefaultPadding * 1.5),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Verder gaan met je cursus?',
-                        style: Theme.of(context).textTheme.headline6,
-                      )
-                    ],
+                height: 220,
+                child: Stack(children: [
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: 180,
+                      width: screen.width,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(35),
+                          gradient: const LinearGradient(
+                              colors: [
+                                kAccentColor,
+                                kAccentColor2,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              stops: [0.0, 1.0],
+                              tileMode: TileMode.clamp)),
+                      child: Container(
+                        padding: const EdgeInsets.all(kDefaultPadding * 1.2),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 200,
+                              child: Text(
+                                'Verder gaan met je cursus?',
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Lottie.asset('assets/lottie/live.json',
+                                    width: 30),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Gellak',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .copyWith(fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: LinearPercentIndicator(
+                                    //leaner progress bar
+                                    animation: true,
+                                    animationDuration: 1000,
+                                    lineHeight: 10.0,
+                                    percent: 80 / 100,
+                                    linearStrokeCap: LinearStrokeCap.roundAll,
+                                    linearGradient: const LinearGradient(
+                                        colors: [
+                                          kAccentColor,
+                                          kAccentColor2,
+                                        ],
+                                        begin: FractionalOffset(0.0, 0.0),
+                                        end: FractionalOffset(1.0, 0.0),
+                                        stops: [0.0, 1.0],
+                                        tileMode: TileMode.clamp),
+                                    backgroundColor: Colors.grey[300],
+                                  ),
+                                ),
+                                const ExpiryIndicator(),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  Positioned(
+                      right: 0,
+                      top: 0,
+                      child: SvgPicture.asset(
+                        'assets/images/sitting-1.svg',
+                        height: 175,
+                      )),
+                ]),
               ),
             ],
           )),

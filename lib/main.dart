@@ -43,6 +43,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var screen = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Hi! Danny', style: Theme.of(context).textTheme.headline5),
@@ -70,8 +71,13 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Lopende cursus',
-                  style: Theme.of(context).textTheme.headline6),
+              Row(
+                children: [
+                  Lottie.asset('assets/lottie/live.json', width: 30),
+                  Text('Lopende cursus',
+                      style: Theme.of(context).textTheme.headline6),
+                ],
+              ),
               Container(
                 width: screen.width,
                 height: 220,
@@ -82,6 +88,12 @@ class _HomePageState extends State<HomePage> {
                       height: 180,
                       width: screen.width,
                       decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: kAccentColor2.withAlpha(40),
+                                blurRadius: 15.0,
+                                offset: const Offset(0.0, 15))
+                          ],
                           borderRadius: BorderRadius.circular(35),
                           gradient: const LinearGradient(
                               colors: [
@@ -105,22 +117,12 @@ class _HomePageState extends State<HomePage> {
                                 style: Theme.of(context).textTheme.headline6,
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Lottie.asset('assets/lottie/live.json',
-                                    width: 30),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Gellak',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline4!
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                              ],
+                            Text(
+                              'Gellak',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline4!
+                                  .copyWith(fontWeight: FontWeight.bold),
                             ),
                             Row(
                               children: [

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/widgets/expiry_indicator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class ProgressCourse extends StatelessWidget {
@@ -48,8 +49,9 @@ class ProgressCourse extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize: kSubtitle1,
                         color: kSecondaryColor)),
-                Text('3 weken over',
-                    style: TextStyle(fontSize: kParagraph1, color: kGrey)),
+                ExpiryIndicator(
+                  daysLeft: 6,
+                )
               ],
             ),
           ),

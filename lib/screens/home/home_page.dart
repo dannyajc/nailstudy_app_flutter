@@ -24,55 +24,84 @@ class HomePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('Hello, Danny!',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: kHeader2,
-                            color: kSecondaryColor)),
-                    Container(
-                      width: 35,
-                      height: 35,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        color: kLightGrey,
+                SizedBox(
+                  height: 100,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Hello, Danny!',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: kHeader2,
+                                  color: kSecondaryColor)),
+                          Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              color: kLightGrey,
+                            ),
+                            child: const Center(
+                              child: Icon(
+                                Icons.notifications_outlined,
+                                color: kSecondaryColor,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.notifications_outlined,
-                          color: kSecondaryColor,
-                        ),
+                      const Flexible(
+                        child: Text('Klaar om weer verder te leren?',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: kHeader1,
+                                color: kSecondaryColor)),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                const Flexible(
-                  child: Text('Klaar om weer verder te leren?',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: kHeader1,
-                          color: kSecondaryColor)),
-                ),
-                const SizedBox(
-                  height: kDefaultPadding,
-                ),
-                ProgressCard(screen: screen),
-                addVerticalSpace(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('Lopende cursussen',
-                        style: TextStyle(
-                            fontSize: kHeader2, color: kSecondaryColor)),
-                    //TODO BUTTON
-                    Text('Toon alles',
-                        style: TextStyle(fontSize: kHeader2, color: kGrey))
-                  ],
-                ),
-                addVerticalSpace(),
-                ProgressCourse(),
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: kDefaultPadding,
+                      ),
+                      ProgressCard(screen: screen),
+                      addVerticalSpace(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text('Lopende cursussen',
+                              style: TextStyle(
+                                  fontSize: kHeader2, color: kSecondaryColor)),
+                          //TODO BUTTON
+                          Text('Toon alles',
+                              style:
+                                  TextStyle(fontSize: kHeader2, color: kGrey))
+                        ],
+                      ),
+                      addVerticalSpace(),
+                      ProgressCourse(),
+                      addVerticalSpace(),
+                      ProgressCourse(),
+                      addVerticalSpace(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text('Voltooide cursussen',
+                              style: TextStyle(
+                                  fontSize: kHeader2, color: kSecondaryColor)),
+                          //TODO BUTTON
+                          Text('Toon alles',
+                              style:
+                                  TextStyle(fontSize: kHeader2, color: kGrey))
+                        ],
+                      ),
+                    ],
+                  ),
+                )
               ],
             )),
       ),

@@ -16,6 +16,7 @@ class ProgressCourse extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(right: kDefaultPadding),
+          // TODO: Change course image
           child: CachedNetworkImage(
             imageUrl:
                 'https://images.unsplash.com/photo-1533158628620-7e35717d36e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2400&q=80',
@@ -24,7 +25,7 @@ class ProgressCourse extends StatelessWidget {
               height: 90.0,
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(8.0),
                 image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
               ),
             ),

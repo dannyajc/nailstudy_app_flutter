@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nailstudy_app_flutter/screens/home/home_page.dart';
+import 'package:nailstudy_app_flutter/screens/chat/chat_screen.dart';
+import 'package:nailstudy_app_flutter/screens/home/home_screen.dart';
+import 'package:nailstudy_app_flutter/screens/profile/profile_screen.dart';
+import 'package:nailstudy_app_flutter/screens/webshop/webshop_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +20,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'SF Pro Display',
       ),
-      home: const HomePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomeScreen(),
+        '/chat': (context) => ChatScreen(),
+        '/webshop': (context) => WebshopScreen(),
+        '/profile': (context) => ProfileScreen(),
+      },
     );
   }
 }

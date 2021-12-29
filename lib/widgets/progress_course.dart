@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/screens/chat/chat_screen.dart';
@@ -15,12 +16,8 @@ class ProgressCourse extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CourseDetailPage(),
-          ),
-        );
+        Navigator.push(context,
+            CupertinoPageRoute(builder: (context) => CourseDetailPage()));
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,6 +1,11 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/screens/course/course_detail_page.dart';
+import 'package:nailstudy_app_flutter/screens/course/lesson_page.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 
 enum LessonType { theory, practice }
@@ -21,12 +26,8 @@ class LessonCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => CourseDetailPage(),
-        //   ),
-        // );
+        Navigator.push(
+            context, CupertinoPageRoute(builder: (context) => LessonPage()));
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -43,9 +44,36 @@ class LessonCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(8.0),
-                  image:
-                      DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                    colorFilter: !available
+                        ? ColorFilter.mode(
+                            Colors.black.withOpacity(0.4),
+                            BlendMode.darken,
+                          )
+                        : null,
+                  ),
                 ),
+                child: !available
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: BackdropFilter(
+                          filter:
+                              new ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
+                          child: new Container(
+                            decoration: new BoxDecoration(
+                              color: Colors.white.withOpacity(0.0),
+                            ),
+                            child: Icon(
+                              Icons.lock,
+                              color: kPrimaryColor,
+                              size: 30,
+                            ),
+                          ),
+                        ),
+                      )
+                    : null,
               ),
               placeholder: (context, url) =>
                   const CircularProgressIndicator.adaptive(),

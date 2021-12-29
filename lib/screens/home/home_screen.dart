@@ -172,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
                             crossAxisCount: 1,
-                            children: <Widget>[
+                            children: const <Widget>[
                               CompletedCourse(),
                               CompletedCourse(),
                               CompletedCourse(),

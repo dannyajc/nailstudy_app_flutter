@@ -31,11 +31,10 @@ class CourseDetailPage extends StatelessWidget {
 
   Widget getLesson() {
     return Column(children: [
-      Align(
+      const Align(
         alignment: Alignment.centerLeft,
         child: Text('Les 1',
-            style:
-                const TextStyle(fontSize: kSubtitle1, color: kSecondaryColor)),
+            style: TextStyle(fontSize: kSubtitle1, color: kSecondaryColor)),
       ),
       addVerticalSpace(),
       const LessonCard(
@@ -59,12 +58,6 @@ class CourseDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Navigator.pushReplacement(
-    //   context,
-    //   PageRouteBuilder(
-    //     pageBuilder: (context, animation1, animation2) => HomeScreen(),
-    //     transitionDuration: Duration.zero,
-    //   ),
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -76,21 +69,12 @@ class CourseDetailPage extends StatelessWidget {
           ),
           iconSize: 20.0,
           onPressed: () {
-            Navigator.pushReplacement(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (context, animation1, animation2) =>
-                      const HomeScreen(),
-                  transitionDuration: Duration.zero,
-                ));
+            Navigator.pop(context);
           },
         ),
         centerTitle: true,
         title: const Text('Details',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: kHeader2,
-                color: kSecondaryColor)),
+            style: TextStyle(fontSize: kHeader2, color: kSecondaryColor)),
       ),
       body: SingleChildScrollView(
         child: Column(

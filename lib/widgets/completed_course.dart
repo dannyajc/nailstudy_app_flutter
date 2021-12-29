@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 import 'package:nailstudy_app_flutter/widgets/completed_indicator.dart';
-import 'package:nailstudy_app_flutter/widgets/expiry_indicator.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 class CompletedCourse extends StatelessWidget {
   const CompletedCourse({

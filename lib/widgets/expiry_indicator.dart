@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 
 class ExpiryIndicator extends StatelessWidget {
-  final daysLeft;
+  final int daysLeft;
 
   const ExpiryIndicator({
     Key? key,
-    @required this.daysLeft,
+    required this.daysLeft,
   }) : super(key: key);
 
   @override

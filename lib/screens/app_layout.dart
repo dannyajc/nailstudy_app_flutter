@@ -7,6 +7,8 @@ import 'package:nailstudy_app_flutter/screens/profile/profile_screen.dart';
 import 'package:nailstudy_app_flutter/screens/webshop/webshop_screen.dart';
 
 class AppLayout extends StatefulWidget {
+  const AppLayout({Key? key}) : super(key: key);
+
   @override
   _AppLayoutState createState() => _AppLayoutState();
 }

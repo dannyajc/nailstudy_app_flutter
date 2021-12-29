@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/screens/course/lesson_card.dart';
-import 'package:nailstudy_app_flutter/screens/home/home_screen.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 import 'package:nailstudy_app_flutter/widgets/expandable_text.dart';
 import 'package:nailstudy_app_flutter/widgets/expiry_card.dart';
@@ -47,10 +46,9 @@ class CourseDetailPage extends StatelessWidget {
         finishedLesson: false,
       ),
       addVerticalSpace(),
-      Container(
-        margin: new EdgeInsetsDirectional.only(start: 30.0, end: 30.0),
-        height: 1.0,
-        color: kLightGrey,
+      const Divider(
+        indent: 30,
+        endIndent: 30,
       ),
       addVerticalSpace()
     ]);

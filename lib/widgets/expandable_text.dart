@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 
+// ignore: must_be_immutable
 class ExpandableText extends StatefulWidget {
-  ExpandableText(this.text);
+  ExpandableText(this.text, {Key? key}) : super(key: key);
 
   final String text;
-  bool isExpanded = false;
+  late bool isExpanded = false;
 
   @override
   _ExpandableTextState createState() => _ExpandableTextState();
@@ -26,7 +27,7 @@ class _ExpandableTextState extends State<ExpandableText>
                 widget.text,
                 softWrap: true,
                 overflow: TextOverflow.fade,
-                style: TextStyle(fontSize: kParagraph1, color: kGrey),
+                style: const TextStyle(fontSize: kParagraph1, color: kGrey),
               ))),
       widget.isExpanded
           ? ConstrainedBox(constraints: const BoxConstraints())

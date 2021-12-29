@@ -14,46 +14,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     var screen = MediaQuery.of(context).size;
 
     return Scaffold(
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: const <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home_outlined),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.chat_outlined),
-      //       label: 'Chat',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.public_outlined),
-      //       label: 'Webshop',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.person_outline),
-      //       label: 'Profiel',
-      //     ),
-      //   ],
-      //   currentIndex: _selectedIndex,
-      //   selectedItemColor: Colors.black,
-      //   unselectedItemColor: kGrey,
-      //   showUnselectedLabels: true,
-      //   type: BottomNavigationBarType.fixed,
-      //   backgroundColor: kLightGrey,
-      //   onTap: _onItemTapped,
-      // ),
       backgroundColor: kDefaultBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(

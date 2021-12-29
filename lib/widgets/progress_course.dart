@@ -2,13 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
-import 'package:nailstudy_app_flutter/screens/chat/chat_screen.dart';
 import 'package:nailstudy_app_flutter/screens/course/course_detail_page.dart';
 import 'package:nailstudy_app_flutter/widgets/expiry_indicator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class ProgressCourse extends StatelessWidget {
-  final detailScreenVersion;
+  final bool detailScreenVersion;
   const ProgressCourse({Key? key, this.detailScreenVersion = false})
       : super(key: key);
 
@@ -17,7 +16,7 @@ class ProgressCourse extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(context,
-            CupertinoPageRoute(builder: (context) => CourseDetailPage()));
+            CupertinoPageRoute(builder: (context) => const CourseDetailPage()));
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -59,7 +58,8 @@ class ProgressCourse extends StatelessWidget {
                       detailScreenVersion
                           ? 'License code 34834289'
                           : '#78K6HY5',
-                      style: TextStyle(fontSize: kParagraph1, color: kGrey)),
+                      style:
+                          const TextStyle(fontSize: kParagraph1, color: kGrey)),
                   Text('Basic Acrylic Nails',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -67,11 +67,11 @@ class ProgressCourse extends StatelessWidget {
                           fontSize: detailScreenVersion ? kHeader1 : kSubtitle1,
                           color: kSecondaryColor)),
                   detailScreenVersion
-                      ? Text('6 of 12 classes left',
+                      ? const Text('6 of 12 classes left',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontSize: kSubtitle1, color: kSecondaryColor))
-                      : ExpiryIndicator(
+                      : const ExpiryIndicator(
                           daysLeft: 6,
                         )
                 ],

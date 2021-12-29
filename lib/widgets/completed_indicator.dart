@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
-import 'package:nailstudy_app_flutter/utils/spacing.dart';
 
 class CompletedIndicator extends StatelessWidget {
   const CompletedIndicator({Key? key}) : super(key: key);
@@ -13,7 +12,7 @@ class CompletedIndicator extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
         child: Row(
-          children: [
+          children: const [
             Icon(
               Icons.check,
               color: Colors.white,

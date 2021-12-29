@@ -4,20 +4,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
-import 'package:nailstudy_app_flutter/screens/course/course_detail_page.dart';
-import 'package:nailstudy_app_flutter/screens/course/lesson_page.dart';
+import 'package:nailstudy_app_flutter/screens/course/lesson_pages_container.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 
 enum LessonType { theory, practice }
 
 class LessonCard extends StatelessWidget {
-  final lessonType;
-  final finishedLesson;
-  final available;
+  final LessonType lessonType;
+  final bool finishedLesson;
+  final bool available;
 
   const LessonCard(
       {Key? key,
-      @required this.lessonType,
+      required this.lessonType,
       this.finishedLesson = false,
       this.available = true})
       : super(key: key);
@@ -27,13 +26,17 @@ class LessonCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, CupertinoPageRoute(builder: (context) => LessonPage()));
+            context,
+            CupertinoPageRoute(
+                builder: (context) => const LessonPagerContainer(
+                      amountOfSubjects: [0, 1, 2, 3, 4],
+                    )));
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: EdgeInsets.only(right: kDefaultPadding),
+            padding: const EdgeInsets.only(right: kDefaultPadding),
             // TODO: Change course image
             child: CachedNetworkImage(
               imageUrl:
@@ -59,13 +62,12 @@ class LessonCard extends StatelessWidget {
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
                         child: BackdropFilter(
-                          filter:
-                              new ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
-                          child: new Container(
-                            decoration: new BoxDecoration(
+                          filter: ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
+                          child: Container(
+                            decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.0),
                             ),
-                            child: Icon(
+                            child: const Icon(
                               Icons.lock,
                               color: kPrimaryColor,
                               size: 30,
@@ -106,11 +108,11 @@ class LessonCard extends StatelessWidget {
                         size: 20,
                       ),
                       Text(
-                          LessonType == LessonType.theory
+                          lessonType == LessonType.theory
                               ? '10 onderwerpen'
                               : '8 stappen',
-                          style:
-                              TextStyle(fontSize: kParagraph1, color: kGrey)),
+                          style: const TextStyle(
+                              fontSize: kParagraph1, color: kGrey)),
                     ],
                   ),
                 ],

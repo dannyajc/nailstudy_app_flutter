@@ -2,17 +2,22 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/screens/course/lesson_card.dart';
+import 'package:nailstudy_app_flutter/screens/course/lesson_completed_screen.dart';
 import 'package:nailstudy_app_flutter/screens/course/subject_paragraph.dart';
+import 'package:nailstudy_app_flutter/screens/home/home_screen.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 
 class LessonPage extends StatelessWidget {
   final int currentSubject;
   final PageController pageController;
+  final int totalPages;
 
   const LessonPage({
     Key? key,
     required this.currentSubject,
     required this.pageController,
+    required this.totalPages,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -139,9 +144,21 @@ class LessonPage extends StatelessWidget {
                         color: kPrimaryColor,
                         borderRadius: BorderRadius.circular(8.0),
                         onPressed: () {
-                          pageController.nextPage(
-                              duration: const Duration(milliseconds: 400),
-                              curve: Curves.easeInOut);
+                          // TODO: Add check only when it's practice. Not with theory
+                          // Now go to completed screen where you can submit pictures
+                          if (currentSubject == totalPages - 1) {
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) =>
+                                        const LessonCompletedScreen(
+                                          lessonType: LessonType.theory,
+                                        )));
+                          } else {
+                            pageController.nextPage(
+                                duration: const Duration(milliseconds: 400),
+                                curve: Curves.easeInOut);
+                          }
                         },
                         child: Container(
                           height: 70,
@@ -152,9 +169,11 @@ class LessonPage extends StatelessWidget {
                                 ? MainAxisAlignment.center
                                 : MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
-                                'Volgende onderwerp',
-                                style: TextStyle(
+                              Text(
+                                currentSubject == totalPages - 1
+                                    ? 'Afronden'
+                                    : 'Volgende onderwerp',
+                                style: const TextStyle(
                                     fontSize: kSubtitle1,
                                     color: kSecondaryColor,
                                     fontWeight: FontWeight.bold),

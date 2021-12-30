@@ -17,6 +17,7 @@ class _LessonPagerContainerState extends State<LessonPagerContainer> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: initial page to where the user left off
     final PageController controller = PageController();
     return Scaffold(
       appBar: AppBar(
@@ -42,6 +43,7 @@ class _LessonPagerContainerState extends State<LessonPagerContainer> {
           ...widget.amountOfSubjects.mapIndexed((item, index) => LessonPage(
                 currentSubject: index,
                 pageController: controller,
+                totalPages: widget.amountOfSubjects.length,
               ))
         ],
         onPageChanged: (index) {

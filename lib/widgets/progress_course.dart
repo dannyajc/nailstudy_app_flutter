@@ -15,8 +15,13 @@ class ProgressCourse extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            CupertinoPageRoute(builder: (context) => const CourseDetailPage()));
+        detailScreenVersion
+            ? null
+            : Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    settings: RouteSettings(name: "/courseDetail"),
+                    builder: (context) => const CourseDetailPage()));
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

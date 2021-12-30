@@ -152,7 +152,7 @@ class LessonPage extends StatelessWidget {
                                 CupertinoPageRoute(
                                     builder: (context) =>
                                         const LessonCompletedScreen(
-                                          lessonType: LessonType.theory,
+                                          lessonType: LessonType.practice,
                                         )));
                           } else {
                             pageController.nextPage(

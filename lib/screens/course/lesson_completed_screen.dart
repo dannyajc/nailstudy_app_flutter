@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/screens/course/lesson_card.dart';
+import 'package:nailstudy_app_flutter/screens/images/image_selection_screen.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 
 class LessonCompletedScreen extends StatelessWidget {
@@ -107,8 +108,16 @@ class LessonCompletedScreen extends StatelessWidget {
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.circular(8.0),
                   onPressed: () {
-                    Navigator.popUntil(
-                        context, ModalRoute.withName('/courseDetail'));
+                    if (lessonType == LessonType.theory) {
+                      Navigator.popUntil(
+                          context, ModalRoute.withName('/courseDetail'));
+                    } else {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) =>
+                                  const ImageSelectionScreen()));
+                    }
                   },
                   child: Container(
                     height: 70,

@@ -43,5 +43,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Nail Study wil gebruik maken van de camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Nail Study wil gebruik maken van je fotogallerij</string>
 </dict>
 </plist>

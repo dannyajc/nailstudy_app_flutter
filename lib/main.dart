@@ -4,6 +4,8 @@ import 'package:nailstudy_app_flutter/screens/chat/chat_screen.dart';
 import 'package:nailstudy_app_flutter/screens/course/course_detail_page.dart';
 import 'package:nailstudy_app_flutter/screens/course/lesson_pages_container.dart';
 import 'package:nailstudy_app_flutter/screens/home/home_screen.dart';
+import 'package:nailstudy_app_flutter/screens/login/login_screen.dart';
+import 'package:nailstudy_app_flutter/screens/login/register_screen.dart';
 import 'package:nailstudy_app_flutter/screens/profile/profile_screen.dart';
 import 'package:nailstudy_app_flutter/screens/webshop/webshop_screen.dart';
 
@@ -23,10 +25,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'SF Pro Display',
       ),
-      home: const AppLayout(),
+      home: const LoginScreen(),
       // initialRoute: '/applayout',
       routes: {
-        '/home': (context) => HomeScreen(),
+        '/home': (context) => const AppLayout(),
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
         '/chat': (context) => const ChatScreen(),
         '/webshop': (context) => const WebshopScreen(),
         '/profile': (context) => const ProfileScreen(),

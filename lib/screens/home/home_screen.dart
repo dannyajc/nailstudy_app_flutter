@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     const Icon(Icons.error),
                               ),
                             ),
-                            const Text('Hello, Danny!',
+                            const Text('Hallo, Danny!',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: kHeader2,

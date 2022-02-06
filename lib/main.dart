@@ -1,4 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
 import 'package:nailstudy_app_flutter/screens/app_layout.dart';
 import 'package:nailstudy_app_flutter/screens/chat/chat_screen.dart';
 import 'package:nailstudy_app_flutter/screens/course/course_detail_page.dart';
@@ -8,9 +11,21 @@ import 'package:nailstudy_app_flutter/screens/login/login_screen.dart';
 import 'package:nailstudy_app_flutter/screens/login/register_screen.dart';
 import 'package:nailstudy_app_flutter/screens/profile/profile_screen.dart';
 import 'package:nailstudy_app_flutter/screens/webshop/webshop_screen.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FlutterNativeSplash.removeAfter(initialization);
+
+  runApp(ChangeNotifierProvider(
+      create: (context) => UserStore(), child: const MyApp()));
+}
+
+void initialization(BuildContext context) async {
+  print('ready in 3...');
+  await Future.delayed(const Duration(seconds: 1));
+  print('go!');
 }
 
 class MyApp extends StatelessWidget {

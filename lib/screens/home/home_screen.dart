@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
 import 'package:nailstudy_app_flutter/screens/home/widgets/progress_card.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 import 'package:nailstudy_app_flutter/widgets/completed_course.dart';
 import 'package:nailstudy_app_flutter/widgets/progress_course.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -58,11 +60,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                     const Icon(Icons.error),
                               ),
                             ),
-                            const Text('Hallo, Danny!',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: kHeader2,
-                                    color: kSecondaryColor)),
+                            Consumer<UserStore>(
+                              builder: (context, value, child) => value.user !=
+                                      null
+                                  ? Text('Hallo, ${value.user?.firstName}!',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: kHeader2,
+                                          color: kSecondaryColor))
+                                  : Container(),
+                            ),
                             // TODO: Notification Icon
                             // Container(
                             //   width: 35,

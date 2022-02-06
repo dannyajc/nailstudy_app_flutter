@@ -4,7 +4,9 @@ import 'package:nailstudy_app_flutter/constants.dart';
 
 class PrimaryButton extends StatelessWidget {
   final VoidCallback onPress;
-  const PrimaryButton({Key? key, required this.onPress}) : super(key: key);
+  final bool loading;
+  const PrimaryButton({Key? key, required this.onPress, this.loading = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +19,15 @@ class PrimaryButton extends StatelessWidget {
         alignment: Alignment.center,
         height: 70,
         padding: EdgeInsets.symmetric(horizontal: 30),
-        child: Text(
-          'Log in',
-          style: const TextStyle(
-              fontSize: kSubtitle1,
-              color: kSecondaryColor,
-              fontWeight: FontWeight.bold),
-        ),
+        child: loading
+            ? CircularProgressIndicator.adaptive()
+            : Text(
+                'Log in',
+                style: const TextStyle(
+                    fontSize: kSubtitle1,
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.bold),
+              ),
       ),
     );
   }

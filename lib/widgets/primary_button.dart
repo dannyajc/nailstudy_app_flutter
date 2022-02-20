@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 
 class PrimaryButton extends StatelessWidget {
+  final String? label;
   final VoidCallback onPress;
   final bool loading;
-  const PrimaryButton({Key? key, required this.onPress, this.loading = false})
+  const PrimaryButton(
+      {Key? key, this.label, required this.onPress, this.loading = false})
       : super(key: key);
 
   @override
@@ -22,7 +24,7 @@ class PrimaryButton extends StatelessWidget {
         child: loading
             ? CircularProgressIndicator.adaptive()
             : Text(
-                'Log in',
+                label ?? '',
                 style: const TextStyle(
                     fontSize: kSubtitle1,
                     color: kSecondaryColor,

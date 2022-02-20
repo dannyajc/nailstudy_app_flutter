@@ -118,9 +118,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       addVerticalSpace(),
-                      const ProgressCourse(),
-                      addVerticalSpace(),
-                      const ProgressCourse(),
+                      Consumer<UserStore>(builder: (context, value, child) {
+                        if (value.user != null &&
+                            value.user!.courses.isNotEmpty) {
+                          return Column(
+                            children: value.user!.courses.map((e) {
+                              return const Padding(
+                                  padding:
+                                      EdgeInsets.only(bottom: kDefaultPadding),
+                                  child: ProgressCourse());
+                            }).toList(),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      }),
                       addVerticalSpace(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -137,19 +149,35 @@ class _HomeScreenState extends State<HomeScreen> {
                       addVerticalSpace(),
                       SizedBox(
                           height: 100,
-                          child: GridView.count(
-                            primary: false,
-                            scrollDirection: Axis.horizontal,
-                            childAspectRatio: .35,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                            crossAxisCount: 1,
-                            children: const <Widget>[
-                              CompletedCourse(),
-                              CompletedCourse(),
-                              CompletedCourse(),
-                              CompletedCourse(),
-                            ],
+                          child: ShaderMask(
+                            shaderCallback: (Rect rect) {
+                              return const LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Colors.purple,
+                                  Colors.transparent,
+                                  Colors.transparent,
+                                  Colors.purple
+                                ],
+                                stops: [0.0, 0.05, 0.95, 1.0],
+                              ).createShader(rect);
+                            },
+                            blendMode: BlendMode.dstOut,
+                            child: GridView.count(
+                              primary: false,
+                              scrollDirection: Axis.horizontal,
+                              childAspectRatio: .35,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              crossAxisCount: 1,
+                              children: const <Widget>[
+                                CompletedCourse(),
+                                CompletedCourse(),
+                                CompletedCourse(),
+                                CompletedCourse(),
+                              ],
+                            ),
                           )),
                     ],
                   ),

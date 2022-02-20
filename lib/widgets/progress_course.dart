@@ -20,7 +20,7 @@ class ProgressCourse extends StatelessWidget {
             : Navigator.push(
                 context,
                 CupertinoPageRoute(
-                    settings: RouteSettings(name: "/courseDetail"),
+                    settings: const RouteSettings(name: "/courseDetail"),
                     builder: (context) => const CourseDetailPage()));
       },
       child: Row(

@@ -1,3 +1,5 @@
+import 'package:nailstudy_app_flutter/logic/user/user_course_model.dart';
+
 class UserModel {
   String id;
   bool isAdmin;
@@ -9,33 +11,38 @@ class UserModel {
   String zipCode;
   String address;
   String city;
-  // TODO: Make
-  // UserCourse[]
+  List<UserCourseModel> courses;
 
-  UserModel(
-      {required this.id,
-      required this.isAdmin,
-      required this.lastName,
-      required this.firstName,
-      required this.email,
-      required this.avatar,
-      required this.phone,
-      required this.zipCode,
-      required this.address,
-      required this.city});
+  UserModel({
+    required this.id,
+    required this.isAdmin,
+    required this.lastName,
+    required this.firstName,
+    required this.email,
+    required this.avatar,
+    required this.phone,
+    required this.zipCode,
+    required this.address,
+    required this.city,
+    required this.courses,
+  });
 
   static UserModel fromJson(dynamic json) {
     return UserModel(
-      id: json['id'],
-      isAdmin: json['isAdmin'],
-      lastName: json['lastName'],
-      firstName: json['firstName'],
-      email: json['email'],
-      avatar: json['avatar'],
-      phone: json['phone'],
-      zipCode: json['zipCode'],
-      address: json['address'],
-      city: json['city'],
-    );
+        id: json['id'],
+        isAdmin: json['isAdmin'],
+        lastName: json['lastName'],
+        firstName: json['firstName'],
+        email: json['email'],
+        avatar: json['avatar'],
+        phone: json['phone'],
+        zipCode: json['zipCode'],
+        address: json['address'],
+        city: json['city'],
+        courses: json['courses'].length != 0
+            ? json['courses']
+                .map<UserCourseModel>((obj) => UserCourseModel.fromJson(obj))
+                .toList()
+            : []);
   }
 }

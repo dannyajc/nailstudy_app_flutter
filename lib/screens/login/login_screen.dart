@@ -23,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool emailValid = true;
   bool passwordValid = true;
-  bool loading = false;
 
   void loginToFirebase(BuildContext context) {
     if (emailController.text.isEmpty ||
@@ -49,19 +48,20 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     if (passwordValid && emailValid) {
-      setState(() {
-        loading = true;
-      });
       firebaseAuth
           .signInWithEmailAndPassword(
               email: emailController.text, password: passwordController.text)
           .then((result) async {
-        Provider.of<UserStore>(context, listen: false).fetchSelf();
-
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => AppLayout(uid: result.user?.uid)));
+        Provider.of<UserStore>(context, listen: false).fetchSelf().then((_) => {
+              if (!Provider.of<UserStore>(context, listen: false).loading)
+                {
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) =>
+                              AppLayout(uid: result.user?.uid)))
+                }
+            });
       }).catchError((error) {
         var content = '';
         switch (error.code) {
@@ -77,11 +77,11 @@ class _LoginScreenState extends State<LoginScreen> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text("Oops.."),
+                title: const Text("Oops.."),
                 content: Text(content),
                 actions: [
                   TextButton(
-                    child: Text("Ok"),
+                    child: const Text("Ok"),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: Remove
-    emailController.text = 'test.test@msn.com';
+    emailController.text = 'danny1_janssen@msn.com';
     passwordController.text = 'test123';
     return Scaffold(
       appBar: AppBar(
@@ -164,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style:
                       TextStyle(fontSize: kParagraph1, color: kSecondaryColor)),
             ),
-            Spacer(),
+            const Spacer(),
             Align(
               alignment: Alignment.center,
               child: TextButton(
@@ -177,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       CupertinoPageRoute(
                           builder: (context) => const RegisterScreen()));
                 },
-                child: Text('Registreren',
+                child: const Text('Registreren',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: kParagraph1,
@@ -186,10 +186,11 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             addVerticalSpace(),
             PrimaryButton(
+                label: 'Log in',
                 onPress: () {
                   loginToFirebase(context);
                 },
-                loading: loading)
+                loading: Provider.of<UserStore>(context, listen: false).loading)
           ],
         ),
       )),

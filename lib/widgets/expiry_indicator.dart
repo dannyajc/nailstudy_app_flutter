@@ -20,6 +20,12 @@ class ExpiryIndicator extends StatelessWidget {
       var weeks = (daysLeft / 7);
       concatString = '${weeks.round()} weken over';
     }
+    if (daysLeft == 0) {
+      concatString = 'Vandaag';
+    }
+    if (daysLeft < 0) {
+      concatString = 'Verlopen (${daysLeft.abs()} geleden)';
+    }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/logic/courses/course_store.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
 import 'package:nailstudy_app_flutter/screens/home/widgets/progress_card.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
@@ -16,6 +17,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    Provider.of<CourseStore>(context, listen: false).fetchAllCourses();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var screen = MediaQuery.of(context).size;
@@ -118,17 +125,29 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       addVerticalSpace(),
-                      Consumer<UserStore>(builder: (context, value, child) {
-                        if (value.user != null &&
-                            value.user!.courses.isNotEmpty) {
-                          return Column(
-                            children: value.user!.courses.map((e) {
-                              return const Padding(
-                                  padding:
-                                      EdgeInsets.only(bottom: kDefaultPadding),
-                                  child: ProgressCourse());
-                            }).toList(),
-                          );
+                      Consumer<UserStore>(builder: (context, userStore, child) {
+                        if (userStore.user != null &&
+                            userStore.user!.courses.isNotEmpty) {
+                          return Consumer<CourseStore>(
+                              builder: (context, courseStore, child) {
+                            return Column(
+                              children: userStore.user!.courses.map((e) {
+                                if (courseStore.courses != null) {
+                                  return Padding(
+                                      padding: const EdgeInsets.only(
+                                          bottom: kDefaultPadding),
+                                      child: ProgressCourse(
+                                        userProgress: e,
+                                        course: courseStore.courses!.firstWhere(
+                                            (element) =>
+                                                element.id == e.courseId),
+                                      ));
+                                } else {
+                                  return Container();
+                                }
+                              }).toList(),
+                            );
+                          });
                         } else {
                           return Container();
                         }

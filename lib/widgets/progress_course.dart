@@ -2,17 +2,29 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/logic/courses/course_model.dart';
+import 'package:nailstudy_app_flutter/logic/user/user_course_model.dart';
 import 'package:nailstudy_app_flutter/screens/course/course_detail_page.dart';
 import 'package:nailstudy_app_flutter/widgets/expiry_indicator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:intl/intl.dart';
 
 class ProgressCourse extends StatelessWidget {
+  final UserCourseModel userProgress;
+  final CourseModel course;
   final bool detailScreenVersion;
-  const ProgressCourse({Key? key, this.detailScreenVersion = false})
+  const ProgressCourse(
+      {Key? key,
+      required this.userProgress,
+      required this.course,
+      this.detailScreenVersion = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    DateTime expiryDate =
+        new DateFormat("d-M-yyyy HH:mm:ss").parse(userProgress.expiryDate);
+
     return GestureDetector(
       onTap: () {
         detailScreenVersion
@@ -21,7 +33,8 @@ class ProgressCourse extends StatelessWidget {
                 context,
                 CupertinoPageRoute(
                     settings: const RouteSettings(name: "/courseDetail"),
-                    builder: (context) => const CourseDetailPage()));
+                    builder: (context) => CourseDetailPage(
+                        course: course, userProgress: userProgress)));
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,11 +74,11 @@ class ProgressCourse extends StatelessWidget {
                 children: [
                   Text(
                       detailScreenVersion
-                          ? 'License code 34834289'
-                          : '#78K6HY5',
+                          ? 'License code ${userProgress.licenseCode}'
+                          : userProgress.licenseCode,
                       style:
                           const TextStyle(fontSize: kParagraph1, color: kGrey)),
-                  Text('Basic Acrylic Nails',
+                  Text(course.name,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -76,8 +89,11 @@ class ProgressCourse extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontSize: kSubtitle1, color: kSecondaryColor))
-                      : const ExpiryIndicator(
-                          daysLeft: 6,
+                      : ExpiryIndicator(
+                          daysLeft: expiryDate
+                              .difference(DateTime.now())
+                              .inDays
+                              .toInt(),
                         )
                 ],
               ),

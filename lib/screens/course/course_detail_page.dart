@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/logic/courses/course_model.dart';
+import 'package:nailstudy_app_flutter/logic/user/user_course_model.dart';
 import 'package:nailstudy_app_flutter/screens/course/lesson_card.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 import 'package:nailstudy_app_flutter/widgets/expandable_text.dart';
@@ -26,7 +28,11 @@ var lessons = [
 ];
 
 class CourseDetailPage extends StatelessWidget {
-  const CourseDetailPage({Key? key}) : super(key: key);
+  final CourseModel course;
+  final UserCourseModel userProgress;
+  const CourseDetailPage(
+      {Key? key, required this.course, required this.userProgress})
+      : super(key: key);
 
   Widget getLesson() {
     return Column(children: [
@@ -114,7 +120,10 @@ class CourseDetailPage extends StatelessWidget {
               child: Column(
                 children: [
                   addVerticalSpace(),
-                  const ProgressCourse(detailScreenVersion: true),
+                  ProgressCourse(
+                      course: course,
+                      userProgress: userProgress,
+                      detailScreenVersion: true),
                   addVerticalSpace(),
                   const ExpiryCard(),
                   addVerticalSpace(),

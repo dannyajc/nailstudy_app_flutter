@@ -24,7 +24,7 @@ class ExpiryIndicator extends StatelessWidget {
       concatString = 'Vandaag';
     }
     if (daysLeft < 0) {
-      concatString = 'Verlopen (${daysLeft.abs()} geleden)';
+      concatString = 'Verlopen (${daysLeft.abs()} dagen geleden)';
     }
 
     return Row(
@@ -40,10 +40,8 @@ class ExpiryIndicator extends StatelessWidget {
         ),
         Text(
           concatString,
-          style: Theme.of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(color: daysLeft < 7 ? Colors.red : kGrey),
+          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+              color: daysLeft < 7 ? Colors.red : kGrey, fontSize: kParagraph1),
         ),
       ],
     );

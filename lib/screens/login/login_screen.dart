@@ -190,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPress: () {
                   loginToFirebase(context);
                 },
-                loading: Provider.of<UserStore>(context, listen: false).loading)
+                loading: Provider.of<UserStore>(context, listen: true).loading)
           ],
         ),
       )),

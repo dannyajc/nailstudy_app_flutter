@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:collection/collection.dart';
+import 'package:nailstudy_app_flutter/logic/courses/lesson_model.dart';
+import 'package:nailstudy_app_flutter/logic/courses/subject_model.dart';
+import 'package:nailstudy_app_flutter/screens/course/lesson_card.dart';
 import 'package:nailstudy_app_flutter/screens/course/lesson_page.dart';
 
 class LessonPagerContainer extends StatefulWidget {
-  final List<int> amountOfSubjects;
-  const LessonPagerContainer({Key? key, this.amountOfSubjects = const []})
+  final Lesson lesson;
+  final LessonType lessonType;
+  final List<Subject> subjects;
+  const LessonPagerContainer(
+      {Key? key,
+      required this.lesson,
+      required this.lessonType,
+      required this.subjects})
       : super(key: key);
 
   @override
@@ -34,16 +43,22 @@ class _LessonPagerContainerState extends State<LessonPagerContainer> {
           },
         ),
         centerTitle: true,
-        title: Text('Les 1 | Onderwerp $currentSubject',
+        title: Text(
+            (currentSubject == 0 &&
+                    widget.subjects[currentSubject].isIntroduction)
+                ? 'Les ${widget.lesson.lessonNumber} | Introductie'
+                : 'Les ${widget.lesson.lessonNumber} | Onderwerp $currentSubject',
             style: const TextStyle(fontSize: kHeader2, color: kSecondaryColor)),
       ),
       body: PageView(
         controller: controller,
         children: <Widget>[
-          ...widget.amountOfSubjects.mapIndexed((item, index) => LessonPage(
+          ...widget.subjects.mapIndexed((index, subject) => LessonPage(
+                lessonType: widget.lessonType,
+                subject: subject,
                 currentSubject: index,
                 pageController: controller,
-                totalPages: widget.amountOfSubjects.length,
+                totalPages: widget.subjects.length,
               ))
         ],
         onPageChanged: (index) {

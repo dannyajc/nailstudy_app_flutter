@@ -15,12 +15,13 @@ const kErrorColor = Color(0xFFFF0033);
 const kDefaultPadding = 14.0;
 
 // Text
-const kHeader1 = 30.0;
-const kHeader2 = 20.0;
-const kHeader3 = 20.0;
-const kSubtitle1 = 18.0;
-const kParagraph1 = 15.0;
+const kHeader1 = 26.0;
+const kHeader2 = 16.0;
+const kHeader3 = 16.0;
+const kSubtitle1 = 14.0;
+const kParagraph1 = 11.0;
 
 // Data
 // const baseUrl = 'http://localhost:5001/nailstudy-backend-a1c76/us-central1/';
 const baseUrl = 'http://10.0.2.2:5001/nailstudy-backend-a1c76/us-central1/';
+// const baseUrl = 'https://us-central1-nailstudy-backend-v2.cloudfunctions.net/';

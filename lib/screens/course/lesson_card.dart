@@ -4,18 +4,25 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/logic/courses/lesson_material_model.dart';
+import 'package:nailstudy_app_flutter/logic/courses/lesson_model.dart';
+import 'package:nailstudy_app_flutter/logic/courses/subject_model.dart';
 import 'package:nailstudy_app_flutter/screens/course/lesson_pages_container.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 
 enum LessonType { theory, practice }
 
 class LessonCard extends StatelessWidget {
+  final Lesson lesson;
+  final LessonMaterial material;
   final LessonType lessonType;
   final bool finishedLesson;
   final bool available;
 
   const LessonCard(
       {Key? key,
+      required this.lesson,
+      required this.material,
       required this.lessonType,
       this.finishedLesson = false,
       this.available = true})
@@ -24,14 +31,74 @@ class LessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => const LessonPagerContainer(
-                      amountOfSubjects: [0, 1, 2, 3, 4],
-                    )));
-      },
+      onTap: !available
+          ? () {
+              showModalBottomSheet<void>(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(30),
+                  ),
+                ),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                context: context,
+                builder: (BuildContext context) {
+                  return Wrap(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(kDefaultPadding),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              height: 6,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2),
+                                  color: kPrimaryColor),
+                            ),
+                            addVerticalSpace(),
+                            const Text('Rond eerst je les af',
+                                style: TextStyle(
+                                    fontSize: kHeader2,
+                                    color: kSecondaryColor)),
+                            addVerticalSpace(),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: kDefaultPadding),
+                              child: const Text(
+                                'Je moet eerst je andere lessen afronden voordat je deze kan starten.',
+                                style: TextStyle(
+                                    fontSize: kSubtitle1, color: kGrey),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            addVerticalSpace()
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
+          : () {
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) => LessonPagerContainer(
+                            lesson: lesson,
+                            lessonType: lessonType,
+                            subjects: [
+                              Subject(
+                                  title: material.name,
+                                  description: material.description,
+                                  subjectNumber: 0,
+                                  isIntroduction: true),
+                              ...material.subjects ?? []
+                            ],
+                          )));
+            },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -93,9 +160,9 @@ class LessonCard extends StatelessWidget {
                   Text(lessonType == LessonType.theory ? 'Theorie' : 'Praktijk',
                       style:
                           const TextStyle(fontSize: kParagraph1, color: kGrey)),
-                  const Text('Basic Acrylic Nails',
+                  Text(material.name,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: kSubtitle1,
                           color: kSecondaryColor)),
@@ -109,8 +176,8 @@ class LessonCard extends StatelessWidget {
                       ),
                       Text(
                           lessonType == LessonType.theory
-                              ? '10 onderwerpen'
-                              : '8 stappen',
+                              ? '${material.subjects?.length ?? 0} onderwerpen'
+                              : '${material.subjects?.length ?? 0} stappen',
                           style: const TextStyle(
                               fontSize: kParagraph1, color: kGrey)),
                     ],

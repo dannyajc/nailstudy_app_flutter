@@ -81,167 +81,161 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: kDefaultBackgroundColor,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: kSecondaryColor,
+            ),
+            iconSize: 20.0,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        resizeToAvoidBottomInset: true,
         backgroundColor: kDefaultBackgroundColor,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: kSecondaryColor,
-          ),
-          iconSize: 20.0,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      resizeToAvoidBottomInset: true,
-      backgroundColor: kDefaultBackgroundColor,
-      body: SafeArea(
+        body: SafeArea(
           child: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height -
-              (MediaQuery.of(context).padding.top + kToolbarHeight),
-          padding: const EdgeInsets.only(bottom: 40, left: 20, right: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Text('Welkom bij Nail Study',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: kHeader2,
-                      color: kSecondaryColor)),
-              const Text('Creëer je account',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: kHeader1,
-                      color: kSecondaryColor)),
-              addVerticalSpace(),
-              const Text(
-                  'Vul hieronder je gegevens in om aan de slag te gaan met Nail Study',
-                  style: TextStyle(fontSize: kParagraph1, color: kGrey)),
-              addVerticalSpace(),
-              if (!firstNameValid || !lastNameValid)
-                const Text('Voer uw volledige naam in',
-                    style:
-                        TextStyle(fontSize: kParagraph1, color: kErrorColor)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: CupertinoTextField(
-                      controller: firstNameController,
-                      placeholder: 'Voornaam',
-                      padding: const EdgeInsets.all(kDefaultPadding),
-                      decoration: BoxDecoration(
-                          color: kLightGrey,
-                          borderRadius: BorderRadius.circular(8.0)),
-                      autocorrect: false,
+            padding: const EdgeInsets.only(bottom: 40, left: 20, right: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text('Welkom bij Nail Study',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: kHeader2,
+                        color: kSecondaryColor)),
+                const Text('Creëer je account',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: kHeader1,
+                        color: kSecondaryColor)),
+                addVerticalSpace(),
+                const Text(
+                    'Vul hieronder je gegevens in om aan de slag te gaan met Nail Study',
+                    style: TextStyle(fontSize: kParagraph1, color: kGrey)),
+                addVerticalSpace(),
+                if (!firstNameValid || !lastNameValid)
+                  const Text('Voer uw volledige naam in',
+                      style:
+                          TextStyle(fontSize: kParagraph1, color: kErrorColor)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: CupertinoTextField(
+                        controller: firstNameController,
+                        placeholder: 'Voornaam',
+                        padding: const EdgeInsets.all(kDefaultPadding),
+                        decoration: BoxDecoration(
+                            color: kLightGrey,
+                            borderRadius: BorderRadius.circular(8.0)),
+                        autocorrect: false,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: CupertinoTextField(
-                      controller: lastNameController,
-                      placeholder: 'Achternaam',
-                      padding: const EdgeInsets.all(kDefaultPadding),
-                      decoration: BoxDecoration(
-                          color: kLightGrey,
-                          borderRadius: BorderRadius.circular(8.0)),
-                      autocorrect: false,
+                    const SizedBox(
+                      width: 15,
                     ),
-                  ),
-                ],
-              ),
-              addVerticalSpace(),
-              if (!emailValid)
-                const Text('Geen geldig emailadres',
-                    style:
-                        TextStyle(fontSize: kParagraph1, color: kErrorColor)),
-              CupertinoTextField(
-                controller: emailController,
-                placeholder: 'E-mailadres',
-                padding: const EdgeInsets.all(kDefaultPadding),
-                decoration: BoxDecoration(
-                    color: kLightGrey,
-                    borderRadius: BorderRadius.circular(8.0)),
-                autocorrect: false,
-              ),
-              addVerticalSpace(),
-              if (!passwordValid)
-                const Text('Geen geldig wachtwoord',
-                    style:
-                        TextStyle(fontSize: kParagraph1, color: kErrorColor)),
-              CupertinoTextField(
-                controller: passwordController,
-                placeholder: 'Wachtwoord',
-                padding: const EdgeInsets.all(kDefaultPadding),
-                decoration: BoxDecoration(
-                    color: kLightGrey,
-                    borderRadius: BorderRadius.circular(8.0)),
-                obscureText: true,
-                autocorrect: false,
-              ),
-              addVerticalSpace(),
-              if (!phoneValid)
-                const Text('Geen geldig telefoonnummer',
-                    style:
-                        TextStyle(fontSize: kParagraph1, color: kErrorColor)),
-              CupertinoTextField(
-                controller: phoneController,
-                placeholder: 'Telefoonnummer',
-                padding: const EdgeInsets.all(kDefaultPadding),
-                decoration: BoxDecoration(
-                    color: kLightGrey,
-                    borderRadius: BorderRadius.circular(8.0)),
-                autocorrect: false,
-              ),
-              addVerticalSpace(),
-              if (acceptedTerms != null && acceptedTerms == false)
-                const Text('U moet akkoord gaan met de voorwaarden',
-                    style:
-                        TextStyle(fontSize: kParagraph1, color: kErrorColor)),
-              CheckboxListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Ik ga akkoord met de voorwaarden'),
-                  activeColor: Colors.amber,
-                  value: acceptedTerms ?? false,
-                  onChanged: (newValue) {
-                    setState(() {
-                      acceptedTerms = newValue!;
-                    });
-                  },
-                  controlAffinity: ListTileControlAffinity.leading),
-              const Spacer(),
-              Align(
-                alignment: Alignment.center,
-                child: GestureDetector(
-                  onTapUp: (_) {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Al een account? Log in!',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: kParagraph1,
-                          color: kSecondaryColor)),
+                    Expanded(
+                      flex: 1,
+                      child: CupertinoTextField(
+                        controller: lastNameController,
+                        placeholder: 'Achternaam',
+                        padding: const EdgeInsets.all(kDefaultPadding),
+                        decoration: BoxDecoration(
+                            color: kLightGrey,
+                            borderRadius: BorderRadius.circular(8.0)),
+                        autocorrect: false,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              addVerticalSpace(),
-              PrimaryButton(
-                label: 'Registreren',
-                onPress: () {
-                  registerToFirebase(context);
-                },
-                loading: Provider.of<UserStore>(context).loading,
-              )
-            ],
+                addVerticalSpace(),
+                if (!emailValid)
+                  const Text('Geen geldig emailadres',
+                      style:
+                          TextStyle(fontSize: kParagraph1, color: kErrorColor)),
+                CupertinoTextField(
+                  controller: emailController,
+                  placeholder: 'E-mailadres',
+                  padding: const EdgeInsets.all(kDefaultPadding),
+                  decoration: BoxDecoration(
+                      color: kLightGrey,
+                      borderRadius: BorderRadius.circular(8.0)),
+                  autocorrect: false,
+                ),
+                addVerticalSpace(),
+                if (!passwordValid)
+                  const Text('Geen geldig wachtwoord',
+                      style:
+                          TextStyle(fontSize: kParagraph1, color: kErrorColor)),
+                CupertinoTextField(
+                  controller: passwordController,
+                  placeholder: 'Wachtwoord',
+                  padding: const EdgeInsets.all(kDefaultPadding),
+                  decoration: BoxDecoration(
+                      color: kLightGrey,
+                      borderRadius: BorderRadius.circular(8.0)),
+                  obscureText: true,
+                  autocorrect: false,
+                ),
+                addVerticalSpace(),
+                if (!phoneValid)
+                  const Text('Geen geldig telefoonnummer',
+                      style:
+                          TextStyle(fontSize: kParagraph1, color: kErrorColor)),
+                CupertinoTextField(
+                  controller: phoneController,
+                  placeholder: 'Telefoonnummer',
+                  padding: const EdgeInsets.all(kDefaultPadding),
+                  decoration: BoxDecoration(
+                      color: kLightGrey,
+                      borderRadius: BorderRadius.circular(8.0)),
+                  autocorrect: false,
+                ),
+                addVerticalSpace(),
+                if (acceptedTerms != null && acceptedTerms == false)
+                  const Text('U moet akkoord gaan met de voorwaarden',
+                      style:
+                          TextStyle(fontSize: kParagraph1, color: kErrorColor)),
+                CheckboxListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text('Ik ga akkoord met de voorwaarden'),
+                    activeColor: Colors.amber,
+                    value: acceptedTerms ?? false,
+                    onChanged: (newValue) {
+                      setState(() {
+                        acceptedTerms = newValue!;
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading),
+                Center(
+                  child: GestureDetector(
+                    onTapUp: (_) {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Al een account? Log in!',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: kParagraph1,
+                            color: kSecondaryColor)),
+                  ),
+                ),
+                addVerticalSpace(),
+                PrimaryButton(
+                  label: 'Registreren',
+                  onPress: () {
+                    registerToFirebase(context);
+                  },
+                  loading: Provider.of<UserStore>(context).loading,
+                )
+              ],
+            ),
           ),
-        ),
-      )),
-    );
+        ));
   }
 }

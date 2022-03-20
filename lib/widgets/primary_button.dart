@@ -20,9 +20,9 @@ class PrimaryButton extends StatelessWidget {
       child: Container(
         alignment: Alignment.center,
         height: 70,
-        padding: EdgeInsets.symmetric(horizontal: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 30),
         child: loading
-            ? CircularProgressIndicator.adaptive()
+            ? const CircularProgressIndicator.adaptive()
             : Text(
                 label ?? '',
                 style: const TextStyle(

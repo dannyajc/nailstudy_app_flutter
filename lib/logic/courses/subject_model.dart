@@ -4,12 +4,14 @@ class Subject {
   String title;
   String description;
   num subjectNumber;
+  bool isIntroduction;
   List<Paragraph>? paragraphs;
 
   Subject(
       {required this.title,
       required this.description,
       required this.subjectNumber,
+      this.isIntroduction = false,
       this.paragraphs});
 
   static Subject fromJson(dynamic json) {

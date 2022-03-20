@@ -2,23 +2,43 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/logic/courses/subject_model.dart';
 import 'package:nailstudy_app_flutter/screens/course/lesson_card.dart';
 import 'package:nailstudy_app_flutter/screens/course/lesson_completed_screen.dart';
 import 'package:nailstudy_app_flutter/screens/course/subject_paragraph.dart';
-import 'package:nailstudy_app_flutter/screens/home/home_screen.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
+import 'package:collection/collection.dart';
 
 class LessonPage extends StatelessWidget {
+  final LessonType lessonType;
+  final Subject subject;
   final int currentSubject;
   final PageController pageController;
   final int totalPages;
 
   const LessonPage({
     Key? key,
+    required this.lessonType,
+    required this.subject,
     required this.currentSubject,
     required this.pageController,
     required this.totalPages,
   }) : super(key: key);
+
+  List<Widget> getParagraphs() {
+    return subject.paragraphs
+            ?.mapIndexed(
+              (index, paragraph) => SubjectParagraph(
+                  title: 'Stap ${index + 1} | ${paragraph.title}',
+                  imageUrl:
+                      // TODO: replace
+                      'https://images.unsplash.com/photo-1533158628620-7e35717d36e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2400&q=80',
+                  text: paragraph.description),
+            )
+            .toList() ??
+        [];
+  }
+
   @override
   Widget build(BuildContext context) {
     final hasBackButton = currentSubject != 0;
@@ -64,31 +84,32 @@ class LessonPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 addVerticalSpace(),
-                const Text(
-                  'Theorie',
-                  style:
-                      TextStyle(fontSize: kParagraph1, color: kSecondaryColor),
+                Text(
+                  lessonType == LessonType.theory ? 'Theorie' : 'Praktijk',
+                  style: const TextStyle(
+                      fontSize: kParagraph1, color: kSecondaryColor),
                 ),
-                const Text(
-                  'Hoe starten met Basis Acryl nagels',
-                  style: TextStyle(
+                Text(
+                  subject.title,
+                  style: const TextStyle(
                       fontSize: kHeader2,
                       fontWeight: FontWeight.bold,
                       color: kSecondaryColor),
                 ),
                 addVerticalSpace(),
-                const SubjectParagraph(
-                  title: 'Stap 1',
-                  text:
-                      'Dit is een beschrijving van de cursus. Een erg lange tekst maken we er van, Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore hrijving van de cursus. Een erg lange tekst maken we er van, Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore hrijving van de cursus. Een erg lange tekst maken we er van, Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore',
-                ),
-                const SubjectParagraph(
-                  title: 'Stap 2',
-                  imageUrl:
-                      'https://images.unsplash.com/photo-1533158628620-7e35717d36e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2400&q=80',
-                  text:
-                      'Dit is een beschrijving van de cursus. Een erg lange tekst maken we er van, Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore hrijving van de cursus. Een erg lange tekst maken we er van, Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore hrijving van de cursus. Een erg lange tekst maken we er van, Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore',
-                ),
+                // TODO Paragraphs
+                if (subject.isIntroduction) ...[
+                  Text(subject.description,
+                      style:
+                          const TextStyle(fontSize: kParagraph1, color: kGrey)),
+                  addVerticalSpace(),
+                  const Divider(
+                    indent: 30,
+                    endIndent: 30,
+                  ),
+                  addVerticalSpace()
+                ],
+                if (!subject.isIntroduction) ...getParagraphs(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -144,15 +165,12 @@ class LessonPage extends StatelessWidget {
                         color: kPrimaryColor,
                         borderRadius: BorderRadius.circular(8.0),
                         onPressed: () {
-                          // TODO: Add check only when it's practice. Not with theory
-                          // Now go to completed screen where you can submit pictures
                           if (currentSubject == totalPages - 1) {
                             Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                    builder: (context) =>
-                                        const LessonCompletedScreen(
-                                          lessonType: LessonType.theory,
+                                    builder: (context) => LessonCompletedScreen(
+                                          lessonType: lessonType,
                                         )));
                           } else {
                             pageController.nextPage(

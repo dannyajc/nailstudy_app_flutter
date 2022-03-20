@@ -3,15 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:nailstudy_app_flutter/logic/courses/course_store.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
-import 'package:nailstudy_app_flutter/screens/app_layout.dart';
-import 'package:nailstudy_app_flutter/screens/chat/chat_screen.dart';
-import 'package:nailstudy_app_flutter/screens/course/course_detail_page.dart';
-import 'package:nailstudy_app_flutter/screens/course/lesson_pages_container.dart';
-import 'package:nailstudy_app_flutter/screens/home/home_screen.dart';
 import 'package:nailstudy_app_flutter/screens/login/login_screen.dart';
-import 'package:nailstudy_app_flutter/screens/login/register_screen.dart';
-import 'package:nailstudy_app_flutter/screens/profile/profile_screen.dart';
-import 'package:nailstudy_app_flutter/screens/webshop/webshop_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -49,6 +41,12 @@ class MyApp extends StatelessWidget {
         fontFamily: 'SF Pro Display',
       ),
       home: const LoginScreen(),
+      builder: (context, child) {
+        return MediaQuery(
+          child: child!,
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        );
+      },
       // initialRoute: '/applayout',
       routes: {
         // '/home': (context) => const AppLayout(),

@@ -23,7 +23,10 @@ class ProgressCourse extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime expiryDate =
-        new DateFormat("d-M-yyyy HH:mm:ss").parse(userProgress.expiryDate);
+        DateFormat("d-M-yyyy HH:mm:ss").parse(userProgress.expiryDate);
+
+    var progressPercentage =
+        userProgress.currentLessonNumber / (course.lessons?.length ?? 0);
 
     return GestureDetector(
       onTap: () {
@@ -82,13 +85,13 @@ class ProgressCourse extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: detailScreenVersion ? kHeader1 : kSubtitle1,
+                          fontSize: detailScreenVersion ? kHeader2 : kSubtitle1,
                           color: kSecondaryColor)),
                   detailScreenVersion
                       ? const Text('6 of 12 classes left',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              fontSize: kSubtitle1, color: kSecondaryColor))
+                              fontSize: kParagraph1, color: kSecondaryColor))
                       : ExpiryIndicator(
                           daysLeft: expiryDate
                               .difference(DateTime.now())
@@ -103,14 +106,16 @@ class ProgressCourse extends StatelessWidget {
             radius: 60.0,
             lineWidth: 3.0,
             animation: true,
-            percent: 0.7,
-            center: const Text(
+            percent: (progressPercentage.isNaN || progressPercentage == 0)
+                ? .02
+                : progressPercentage,
+            center: Text(
               // TODO CALCULATE PERCENTAGE
-              "70.0%",
-              style: TextStyle(fontSize: 12, color: kSecondaryColor),
+              '${progressPercentage.isNaN ? 0.0 : progressPercentage * 100}%',
+              style: const TextStyle(fontSize: 12, color: kSecondaryColor),
             ),
             circularStrokeCap: CircularStrokeCap.butt,
-            backgroundColor: kDefaultBackgroundColor,
+            backgroundColor: kLightGrey,
             progressColor: kCompletedColor,
           ),
         ],

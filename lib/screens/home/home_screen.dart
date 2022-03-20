@@ -36,74 +36,69 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 120,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(right: kDefaultPadding),
-                              child: CachedNetworkImage(
-                                imageUrl:
-                                    'https://images.unsplash.com/photo-1533158628620-7e35717d36e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2400&q=80',
-                                imageBuilder: (context, imageProvider) =>
-                                    Container(
-                                  width: 35.0,
-                                  height: 35.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    image: DecorationImage(
-                                        image: imageProvider,
-                                        fit: BoxFit.cover),
-                                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(right: kDefaultPadding),
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  'https://images.unsplash.com/photo-1533158628620-7e35717d36e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2400&q=80',
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                width: 35.0,
+                                height: 35.0,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  image: DecorationImage(
+                                      image: imageProvider, fit: BoxFit.cover),
                                 ),
-                                placeholder: (context, url) =>
-                                    const CircularProgressIndicator.adaptive(),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
                               ),
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator.adaptive(),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
                             ),
-                            Consumer<UserStore>(
-                              builder: (context, value, child) => value.user !=
-                                      null
-                                  ? Text('Hallo, ${value.user?.firstName}!',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: kHeader2,
-                                          color: kSecondaryColor))
-                                  : Container(),
-                            ),
-                            // TODO: Notification Icon
-                            // Container(
-                            //   width: 35,
-                            //   height: 35,
-                            //   decoration: BoxDecoration(
-                            //     borderRadius: BorderRadius.circular(8.0),
-                            //     color: kLightGrey,
-                            //   ),
-                            //   child: const Center(
-                            //     child: Icon(
-                            //       Icons.notifications_outlined,
-                            //       color: kSecondaryColor,
-                            //     ),
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                        addVerticalSpace(),
-                        const Flexible(
-                          child: Text('Klaar om weer verder te leren?',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: kHeader1,
-                                  color: kSecondaryColor)),
-                        ),
-                      ],
-                    ),
+                          ),
+                          Consumer<UserStore>(
+                            builder: (context, value, child) =>
+                                value.user != null
+                                    ? Text('Hallo, ${value.user?.firstName}!',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: kHeader2,
+                                            color: kSecondaryColor))
+                                    : Container(),
+                          ),
+                          // TODO: Notification Icon
+                          // Container(
+                          //   width: 35,
+                          //   height: 35,
+                          //   decoration: BoxDecoration(
+                          //     borderRadius: BorderRadius.circular(8.0),
+                          //     color: kLightGrey,
+                          //   ),
+                          //   child: const Center(
+                          //     child: Icon(
+                          //       Icons.notifications_outlined,
+                          //       color: kSecondaryColor,
+                          //     ),
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                      addVerticalSpace(),
+                      const Text('Klaar om weer verder te leren?',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: kHeader1,
+                              color: kSecondaryColor)),
+                    ],
                   ),
                   Column(
                     children: [

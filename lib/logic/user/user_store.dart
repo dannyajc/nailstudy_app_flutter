@@ -15,6 +15,7 @@ class UserStore extends ChangeNotifier {
 
   Future<void> fetchSelf() async {
     _loading = true;
+    notifyListeners();
     var result = await ApiClient().post(Uri.parse(baseUrl + 'getUser'),
         body: jsonEncode({"uid": FirebaseAuth.instance.currentUser?.uid}));
     _user = UserModel.fromJson(jsonDecode(result.body));

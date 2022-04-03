@@ -41,4 +41,22 @@ class UserStore extends ChangeNotifier {
     notifyListeners();
     return;
   }
+
+  Future<String?> activateCourse(String licenseCode) async {
+    _loading = true;
+    notifyListeners();
+    var result = await ApiClient().post(
+        Uri.parse(baseUrl + 'activateUserCourse'),
+        body: jsonEncode({
+          "userId": FirebaseAuth.instance.currentUser?.uid,
+          "licenseCode": licenseCode
+        }));
+    _loading = false;
+    notifyListeners();
+    if (result.statusCode == 404) {
+      return null;
+    }
+    var response = jsonDecode(result.body);
+    return response['course']['courseId'].toString();
+  }
 }

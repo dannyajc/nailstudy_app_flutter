@@ -35,19 +35,31 @@ class _AppLayoutState extends State<AppLayout> {
             backgroundColor: kLightGrey,
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
+                icon: Icon(
+                  Icons.home_outlined,
+                  size: 25,
+                ),
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.chat_outlined),
+                icon: Icon(
+                  Icons.chat_outlined,
+                  size: 25,
+                ),
                 label: 'Chat',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.public_outlined),
+                icon: Icon(
+                  Icons.public_outlined,
+                  size: 25,
+                ),
                 label: 'Webshop',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person_outline),
+                icon: Icon(
+                  Icons.person_outline,
+                  size: 25,
+                ),
                 label: 'Profiel',
               ),
             ],
@@ -56,7 +68,7 @@ class _AppLayoutState extends State<AppLayout> {
             switch (index) {
               case 0:
                 return CupertinoTabView(builder: (context) {
-                  return CupertinoPageScaffold(child: HomeScreen());
+                  return const CupertinoPageScaffold(child: HomeScreen());
                 });
               case 1:
                 return CupertinoTabView(builder: (context) {

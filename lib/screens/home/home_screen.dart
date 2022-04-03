@@ -125,9 +125,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             userStore.user!.courses.isNotEmpty) {
                           return Consumer<CourseStore>(
                               builder: (context, courseStore, child) {
+                            if (courseStore.loading) {
+                              return const CircularProgressIndicator.adaptive();
+                            }
                             return Column(
                               children: userStore.user!.courses.map((e) {
-                                if (courseStore.courses != null) {
+                                if (courseStore.courses != null &&
+                                    e.active == 0) {
                                   return Padding(
                                       padding: const EdgeInsets.only(
                                           bottom: kDefaultPadding),
@@ -186,6 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisSpacing: 10,
                               crossAxisCount: 1,
                               children: const <Widget>[
+                                // TODO: Change to real completed courses
                                 CompletedCourse(),
                                 CompletedCourse(),
                                 CompletedCourse(),

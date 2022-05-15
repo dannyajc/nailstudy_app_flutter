@@ -10,11 +10,13 @@ class LessonPagerContainer extends StatefulWidget {
   final Lesson lesson;
   final LessonType lessonType;
   final List<Subject> subjects;
+  final Function? onNextLesson;
   const LessonPagerContainer(
       {Key? key,
       required this.lesson,
       required this.lessonType,
-      required this.subjects})
+      required this.subjects,
+      required this.onNextLesson})
       : super(key: key);
 
   @override
@@ -59,6 +61,8 @@ class _LessonPagerContainerState extends State<LessonPagerContainer> {
                 currentSubject: index,
                 pageController: controller,
                 totalPages: widget.subjects.length,
+                onNextLesson:
+                    subject.isIntroduction ? null : widget.onNextLesson,
               ))
         ],
         onPageChanged: (index) {

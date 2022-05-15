@@ -18,12 +18,14 @@ class LessonCard extends StatelessWidget {
   final LessonType lessonType;
   final bool finishedLesson;
   final bool available;
+  final Function? onNextLesson;
 
   const LessonCard(
       {Key? key,
       required this.lesson,
       required this.material,
       required this.lessonType,
+      required this.onNextLesson,
       this.finishedLesson = false,
       this.available = true})
       : super(key: key);
@@ -63,10 +65,10 @@ class LessonCard extends StatelessWidget {
                                     fontSize: kHeader2,
                                     color: kSecondaryColor)),
                             addVerticalSpace(),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
+                            const Padding(
+                              padding: EdgeInsets.symmetric(
                                   horizontal: kDefaultPadding),
-                              child: const Text(
+                              child: Text(
                                 'Je moet eerst je andere lessen afronden voordat je deze kan starten.',
                                 style: TextStyle(
                                     fontSize: kSubtitle1, color: kGrey),
@@ -87,6 +89,7 @@ class LessonCard extends StatelessWidget {
                   context,
                   CupertinoPageRoute(
                       builder: (context) => LessonPagerContainer(
+                            onNextLesson: onNextLesson,
                             lesson: lesson,
                             lessonType: lessonType,
                             subjects: [

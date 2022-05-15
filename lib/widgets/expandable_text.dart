@@ -32,7 +32,10 @@ class _ExpandableTextState extends State<ExpandableText>
       widget.isExpanded
           ? ConstrainedBox(constraints: const BoxConstraints())
           : TextButton(
-              child: const Text('...'),
+              child: const Text(
+                '...',
+                style: TextStyle(color: kSecondaryColor),
+              ),
               onPressed: () => setState(() => widget.isExpanded = true))
     ]);
   }

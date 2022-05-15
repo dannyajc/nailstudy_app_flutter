@@ -3,11 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/logic/courses/subject_model.dart';
+import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
 import 'package:nailstudy_app_flutter/screens/course/lesson_card.dart';
 import 'package:nailstudy_app_flutter/screens/course/lesson_completed_screen.dart';
 import 'package:nailstudy_app_flutter/screens/course/subject_paragraph.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 import 'package:collection/collection.dart';
+import 'package:provider/provider.dart';
 
 class LessonPage extends StatelessWidget {
   final LessonType lessonType;
@@ -15,6 +17,7 @@ class LessonPage extends StatelessWidget {
   final int currentSubject;
   final PageController pageController;
   final int totalPages;
+  final Function? onNextLesson;
 
   const LessonPage({
     Key? key,
@@ -23,6 +26,7 @@ class LessonPage extends StatelessWidget {
     required this.currentSubject,
     required this.pageController,
     required this.totalPages,
+    required this.onNextLesson,
   }) : super(key: key);
 
   List<Widget> getParagraphs() {
@@ -135,7 +139,7 @@ class LessonPage extends StatelessWidget {
                                       : MainAxisAlignment.spaceBetween,
                                   children: [
                                     const Text(
-                                      'Vorige onderwerp',
+                                      'Vorige',
                                       style: TextStyle(
                                           fontSize: kSubtitle1,
                                           color: kSecondaryColor,
@@ -165,6 +169,9 @@ class LessonPage extends StatelessWidget {
                         color: kPrimaryColor,
                         borderRadius: BorderRadius.circular(8.0),
                         onPressed: () {
+                          // Add 1 to currentSubject
+                          if (onNextLesson != null) onNextLesson!(context);
+
                           if (currentSubject == totalPages - 1) {
                             Navigator.push(
                                 context,
@@ -190,7 +197,7 @@ class LessonPage extends StatelessWidget {
                               Text(
                                 currentSubject == totalPages - 1
                                     ? 'Afronden'
-                                    : 'Volgende onderwerp',
+                                    : 'Volgende',
                                 style: const TextStyle(
                                     fontSize: kSubtitle1,
                                     color: kSecondaryColor,

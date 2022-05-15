@@ -29,7 +29,7 @@ class ProgressCourse extends StatelessWidget {
         DateFormat("d-M-yyyy HH:mm:ss").parse(userProgress.expiryDate);
 
     var progressPercentage =
-        userProgress.currentLessonNumber / (course.lessons?.length ?? 0);
+        (userProgress.currentLessonNumber - 1) / (course.lessons?.length ?? 0);
 
     return GestureDetector(
       onTap: () {
@@ -80,7 +80,7 @@ class ProgressCourse extends StatelessWidget {
                 children: [
                   Text(
                       detailScreenVersion
-                          ? 'License code ${userProgress.licenseCode}'
+                          ? 'Licentie code ${userProgress.licenseCode}'
                           : userProgress.licenseCode,
                       style:
                           const TextStyle(fontSize: kParagraph1, color: kGrey)),
@@ -91,9 +91,10 @@ class ProgressCourse extends StatelessWidget {
                           fontSize: detailScreenVersion ? kHeader2 : kSubtitle1,
                           color: kSecondaryColor)),
                   detailScreenVersion
-                      ? const Text('6 of 12 classes left',
+                      ? Text(
+                          '${(course.lessons?.length ?? userProgress.currentLessonNumber) - userProgress.currentLessonNumber + 1} van ${course.lessons?.length} lessen te gaan',
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: kParagraph1, color: kSecondaryColor))
                       : ExpiryIndicator(
                           daysLeft: expiryDate
@@ -119,7 +120,8 @@ class ProgressCourse extends StatelessWidget {
             ),
             circularStrokeCap: CircularStrokeCap.butt,
             backgroundColor: kLightGrey,
-            progressColor: kCompletedColor,
+            progressColor:
+                progressPercentage == 1.0 ? kAccentColor : kCompletedColor,
           ),
         ],
       ),

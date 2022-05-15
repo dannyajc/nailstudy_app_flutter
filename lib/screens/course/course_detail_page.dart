@@ -4,11 +4,13 @@ import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/logic/courses/course_model.dart';
 import 'package:nailstudy_app_flutter/logic/courses/lesson_model.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_course_model.dart';
+import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
 import 'package:nailstudy_app_flutter/screens/course/lesson_card.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 import 'package:nailstudy_app_flutter/widgets/expandable_text.dart';
 import 'package:nailstudy_app_flutter/widgets/expiry_card.dart';
 import 'package:nailstudy_app_flutter/widgets/progress_course.dart';
+import 'package:provider/provider.dart';
 
 class CourseDetailPage extends StatelessWidget {
   final CourseModel course;
@@ -16,6 +18,11 @@ class CourseDetailPage extends StatelessWidget {
   const CourseDetailPage(
       {Key? key, required this.course, required this.userProgress})
       : super(key: key);
+
+  void nextLesson(BuildContext context) {
+    Provider.of<UserStore>(context, listen: false)
+        .updateSubjectNumber(course.id);
+  }
 
   Widget getLesson(Lesson lesson) {
     return Column(children: [
@@ -32,6 +39,10 @@ class CourseDetailPage extends StatelessWidget {
         lessonType: LessonType.theory,
         finishedLesson: userProgress.currentLessonNumber > lesson.lessonNumber,
         available: userProgress.currentLessonNumber >= lesson.lessonNumber,
+        // Only allow this function when you are going through the subjects of your current lesson. The subject number shouldn't be updating when you are on lesson 3 but clicking around in lesson 1.
+        onNextLesson: userProgress.currentLessonNumber == lesson.lessonNumber
+            ? nextLesson
+            : null,
       ),
       addVerticalSpace(),
       LessonCard(
@@ -40,6 +51,10 @@ class CourseDetailPage extends StatelessWidget {
         lessonType: LessonType.practice,
         finishedLesson: userProgress.currentLessonNumber > lesson.lessonNumber,
         available: userProgress.currentLessonNumber >= lesson.lessonNumber,
+        // Only allow this function when you are going through the subjects of your current lesson. The subject number shouldn't be updating when you are on lesson 3 but clicking around in lesson 1.
+        onNextLesson: userProgress.currentLessonNumber == lesson.lessonNumber
+            ? nextLesson
+            : null,
       ),
       addVerticalSpace(),
       const Divider(

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/logic/courses/lesson_model.dart';
 import 'package:nailstudy_app_flutter/logic/courses/subject_model.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
 import 'package:nailstudy_app_flutter/screens/course/lesson_card.dart';
@@ -12,21 +13,25 @@ import 'package:collection/collection.dart';
 import 'package:provider/provider.dart';
 
 class LessonPage extends StatelessWidget {
+  final Lesson lesson;
   final LessonType lessonType;
   final Subject subject;
   final int currentSubject;
   final PageController pageController;
   final int totalPages;
   final Function? onNextLesson;
+  final Function finishLesson;
 
   const LessonPage({
     Key? key,
+    required this.lesson,
     required this.lessonType,
     required this.subject,
     required this.currentSubject,
     required this.pageController,
     required this.totalPages,
     required this.onNextLesson,
+    required this.finishLesson,
   }) : super(key: key);
 
   List<Widget> getParagraphs() {
@@ -170,9 +175,19 @@ class LessonPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8.0),
                         onPressed: () {
                           // Add 1 to currentSubject
-                          if (onNextLesson != null) onNextLesson!(context);
+                          // TODO: Fix this when updating subject number has been correctly implemented
+                          // if (onNextLesson != null) onNextLesson!(context);
+                          var currentCourse =
+                              Provider.of<UserStore>(context, listen: false)
+                                  .currentCourse;
 
                           if (currentSubject == totalPages - 1) {
+                            if (currentCourse != null &&
+                                currentCourse.currentLessonNumber <=
+                                    lesson.lessonNumber &&
+                                lessonType == LessonType.practice) {
+                              finishLesson(context);
+                            }
                             Navigator.push(
                                 context,
                                 CupertinoPageRoute(

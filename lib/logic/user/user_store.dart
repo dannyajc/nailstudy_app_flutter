@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/logic/user/user_course_model.dart';
 import 'package:nailstudy_app_flutter/logic/utils/api_client.dart';
 
 import 'user_model.dart';
@@ -10,6 +11,10 @@ import 'user_model.dart';
 class UserStore extends ChangeNotifier {
   UserModel? _user;
   UserModel? get user => _user;
+
+  UserCourseModel? _currentCourse;
+  UserCourseModel? get currentCourse => _currentCourse;
+
   bool _loading = false;
   bool get loading => _loading;
 
@@ -60,11 +65,36 @@ class UserStore extends ChangeNotifier {
     return response['course']['courseId'].toString();
   }
 
+  Future<void> setCurrentUserCourse(UserCourseModel userCourse) async {
+    _loading = true;
+    notifyListeners();
+
+    _currentCourse = userCourse;
+
+    _loading = false;
+    notifyListeners();
+  }
+
   Future<void> updateSubjectNumber(String courseId) async {
     _loading = true;
     notifyListeners();
     var result = await ApiClient().post(
         Uri.parse(baseUrl + 'updateSubjectNumber'),
+        body: jsonEncode({
+          "userId": FirebaseAuth.instance.currentUser?.uid,
+          "courseId": courseId
+        }));
+    if (result.statusCode != 404) {
+      _user = UserModel.fromJson(jsonDecode(result.body));
+    }
+    _loading = false;
+    notifyListeners();
+  }
+
+  Future<void> finishLesson(String courseId) async {
+    _loading = true;
+    notifyListeners();
+    var result = await ApiClient().post(Uri.parse(baseUrl + 'finishLesson'),
         body: jsonEncode({
           "userId": FirebaseAuth.instance.currentUser?.uid,
           "courseId": courseId

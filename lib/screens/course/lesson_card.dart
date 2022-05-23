@@ -19,6 +19,7 @@ class LessonCard extends StatelessWidget {
   final bool finishedLesson;
   final bool available;
   final Function? onNextLesson;
+  final Function finishLesson;
 
   const LessonCard(
       {Key? key,
@@ -26,6 +27,7 @@ class LessonCard extends StatelessWidget {
       required this.material,
       required this.lessonType,
       required this.onNextLesson,
+      required this.finishLesson,
       this.finishedLesson = false,
       this.available = true})
       : super(key: key);
@@ -89,6 +91,7 @@ class LessonCard extends StatelessWidget {
                   context,
                   CupertinoPageRoute(
                       builder: (context) => LessonPagerContainer(
+                            finishLesson: finishLesson,
                             onNextLesson: onNextLesson,
                             lesson: lesson,
                             lessonType: lessonType,

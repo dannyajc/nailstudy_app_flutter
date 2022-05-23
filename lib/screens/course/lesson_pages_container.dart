@@ -11,13 +11,16 @@ class LessonPagerContainer extends StatefulWidget {
   final LessonType lessonType;
   final List<Subject> subjects;
   final Function? onNextLesson;
-  const LessonPagerContainer(
-      {Key? key,
-      required this.lesson,
-      required this.lessonType,
-      required this.subjects,
-      required this.onNextLesson})
-      : super(key: key);
+  final Function finishLesson;
+
+  const LessonPagerContainer({
+    Key? key,
+    required this.lesson,
+    required this.lessonType,
+    required this.subjects,
+    required this.onNextLesson,
+    required this.finishLesson,
+  }) : super(key: key);
 
   @override
   _LessonPagerContainerState createState() => _LessonPagerContainerState();
@@ -56,6 +59,7 @@ class _LessonPagerContainerState extends State<LessonPagerContainer> {
         controller: controller,
         children: <Widget>[
           ...widget.subjects.mapIndexed((index, subject) => LessonPage(
+                lesson: widget.lesson,
                 lessonType: widget.lessonType,
                 subject: subject,
                 currentSubject: index,
@@ -63,6 +67,7 @@ class _LessonPagerContainerState extends State<LessonPagerContainer> {
                 totalPages: widget.subjects.length,
                 onNextLesson:
                     subject.isIntroduction ? null : widget.onNextLesson,
+                finishLesson: widget.finishLesson,
               ))
         ],
         onPageChanged: (index) {

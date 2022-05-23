@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/logic/courses/course_model.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_course_model.dart';
+import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
 import 'package:nailstudy_app_flutter/screens/course/course_detail_page.dart';
 import 'package:nailstudy_app_flutter/widgets/expiry_indicator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ProgressCourse extends StatelessWidget {
   final UserCourseModel userProgress;
@@ -32,16 +34,18 @@ class ProgressCourse extends StatelessWidget {
         (userProgress.currentLessonNumber - 1) / (course.lessons?.length ?? 0);
 
     return GestureDetector(
-      onTap: () {
-        detailScreenVersion || !onPressEnabled
-            ? null
-            : Navigator.push(
-                context,
-                CupertinoPageRoute(
-                    settings: const RouteSettings(name: "/courseDetail"),
-                    builder: (context) => CourseDetailPage(
-                        course: course, userProgress: userProgress)));
-      },
+      onTap: detailScreenVersion || !onPressEnabled
+          ? null
+          : () {
+              Provider.of<UserStore>(context, listen: false)
+                  .setCurrentUserCourse(userProgress);
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      settings: const RouteSettings(name: "/courseDetail"),
+                      builder: (context) => CourseDetailPage(
+                          course: course, userProgress: userProgress)));
+            },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

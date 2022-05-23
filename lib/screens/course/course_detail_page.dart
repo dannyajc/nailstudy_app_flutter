@@ -24,6 +24,10 @@ class CourseDetailPage extends StatelessWidget {
         .updateSubjectNumber(course.id);
   }
 
+  void finishLesson(BuildContext context) {
+    Provider.of<UserStore>(context, listen: false).finishLesson(course.id);
+  }
+
   Widget getLesson(Lesson lesson) {
     return Column(children: [
       Align(
@@ -43,6 +47,7 @@ class CourseDetailPage extends StatelessWidget {
         onNextLesson: userProgress.currentLessonNumber == lesson.lessonNumber
             ? nextLesson
             : null,
+        finishLesson: finishLesson,
       ),
       addVerticalSpace(),
       LessonCard(
@@ -55,6 +60,7 @@ class CourseDetailPage extends StatelessWidget {
         onNextLesson: userProgress.currentLessonNumber == lesson.lessonNumber
             ? nextLesson
             : null,
+        finishLesson: finishLesson,
       ),
       addVerticalSpace(),
       const Divider(

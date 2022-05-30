@@ -49,7 +49,7 @@ class SubjectParagraph extends StatelessWidget {
                 height: 0,
               ),
         Text(
-          text,
+          text.replaceAll('\\n', '\n'),
           style: const TextStyle(fontSize: kParagraph1, color: kGrey),
         ),
         addVerticalSpace(),

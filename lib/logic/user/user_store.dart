@@ -56,6 +56,7 @@ class UserStore extends ChangeNotifier {
           "userId": FirebaseAuth.instance.currentUser?.uid,
           "licenseCode": licenseCode
         }));
+    fetchSelf();
     _loading = false;
     notifyListeners();
     if (result.statusCode == 404) {

@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/logic/courses/course_store.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
@@ -9,7 +8,6 @@ import 'package:nailstudy_app_flutter/screens/profile/profile_screen.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 import 'package:nailstudy_app_flutter/widgets/numpad.dart';
 import 'package:nailstudy_app_flutter/widgets/primary_button.dart';
-import 'package:nailstudy_app_flutter/widgets/progress_course.dart';
 import 'package:provider/provider.dart';
 
 class AddLicenseScreen extends StatefulWidget {
@@ -258,7 +256,7 @@ class _AddLicenseScreenState extends State<AddLicenseScreen> {
           child: Padding(
         padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             const Text('Voeg een nieuwe cursus licentie toe',
                 style: TextStyle(
@@ -285,34 +283,20 @@ class _AddLicenseScreenState extends State<AddLicenseScreen> {
               ),
             ),
             NumPad(
-              buttonSize: 75,
-              buttonColor: kLightGrey,
-              iconColor: kSecondaryColor,
-              controller: _myController,
-              delete: () {
-                if (_myController.text.isNotEmpty) {
-                  _myController.text = _myController.text
-                      .substring(0, _myController.text.length - 1);
-                }
-              },
-              onSubmit: () {
-                debugPrint('Your code: ${_myController.text}');
-                showDialog(
-                    context: context,
-                    builder: (_) => AlertDialog(
-                          content: Text(
-                            "You code is ${_myController.text}",
-                            style: const TextStyle(fontSize: 30),
-                          ),
-                        ));
-              },
-            ),
-            PrimaryButton(
-                label: 'Activeer',
-                onPress: () {
+                buttonSize: 70,
+                buttonColor: kLightGrey,
+                iconColor: kSecondaryColor,
+                controller: _myController,
+                delete: () {
+                  if (_myController.text.isNotEmpty) {
+                    _myController.text = _myController.text
+                        .substring(0, _myController.text.length - 1);
+                  }
+                },
+                onSubmit: () {
                   checkLicenseCode(_myController.text);
                 },
-                loading: Provider.of<UserStore>(context, listen: true).loading)
+                loading: Provider.of<UserStore>(context, listen: true).loading),
           ],
         ),
       )),

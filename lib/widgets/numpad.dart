@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/utils/spacing.dart';
 
 // KeyPad widget
 // This widget is reusable and its buttons are customizable (color, size)
@@ -10,6 +11,7 @@ class NumPad extends StatelessWidget {
   final TextEditingController controller;
   final Function delete;
   final Function onSubmit;
+  final bool loading;
 
   const NumPad({
     Key? key,
@@ -19,12 +21,14 @@ class NumPad extends StatelessWidget {
     required this.delete,
     required this.onSubmit,
     required this.controller,
+    required this.loading,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        addVerticalSpace(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           // implement the number keys (from 0 to 9) with the NumberButton widget
@@ -50,7 +54,7 @@ class NumPad extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 15),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -74,7 +78,7 @@ class NumPad extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 15),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -98,19 +102,10 @@ class NumPad extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 15),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const SizedBox(
-              width: 55,
-            ),
-            NumberButton(
-              number: 0,
-              size: buttonSize,
-              color: buttonColor,
-              controller: controller,
-            ),
             // this button is used to delete the last number
             IconButton(
               onPressed: () => delete(),
@@ -120,6 +115,22 @@ class NumPad extends StatelessWidget {
               ),
               iconSize: buttonSize / 2,
             ),
+            NumberButton(
+              number: 0,
+              size: buttonSize,
+              color: buttonColor,
+              controller: controller,
+            ),
+            loading
+                ? const CircularProgressIndicator.adaptive()
+                : IconButton(
+                    onPressed: () => onSubmit(),
+                    icon: Icon(
+                      Icons.check,
+                      color: iconColor,
+                    ),
+                    iconSize: buttonSize / 2,
+                  ),
           ],
         ),
       ],
@@ -159,7 +170,7 @@ class NumberButton extends StatelessWidget {
           child: Center(
             child: Text(
               number.toString(),
-              style: const TextStyle(color: kSecondaryColor, fontSize: 25),
+              style: const TextStyle(color: kSecondaryColor, fontSize: 20),
             ),
           ),
         ),

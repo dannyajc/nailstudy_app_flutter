@@ -18,8 +18,6 @@ void main() async {
         ],
         child: const MyApp(),
       )));
-  // runApp(ChangeNotifierProvider(
-  //     create: (context) => UserStore(), child: const MyApp()));
 }
 
 void initialization(BuildContext context) async {

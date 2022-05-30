@@ -21,6 +21,8 @@ const kHeader3 = 16.0;
 const kSubtitle1 = 14.0;
 const kParagraph1 = 11.0;
 
+const kTabBarHeight = 50;
+
 // Data
 // const baseUrl = 'http://localhost:5001/nailstudy-backend-a1c76/us-central1/';
 const baseUrl = 'http://10.0.2.2:5001/nailstudy-backend-a1c76/us-central1/';

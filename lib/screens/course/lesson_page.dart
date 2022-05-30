@@ -38,7 +38,9 @@ class LessonPage extends StatelessWidget {
     return subject.paragraphs
             ?.mapIndexed(
               (index, paragraph) => SubjectParagraph(
-                  title: 'Stap ${index + 1} | ${paragraph.title}',
+                  title: lessonType == LessonType.practice
+                      ? 'Stap ${index + 1} | ${paragraph.title}'
+                      : paragraph.title,
                   imageUrl:
                       // TODO: replace
                       'https://images.unsplash.com/photo-1533158628620-7e35717d36e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2400&q=80',
@@ -108,7 +110,7 @@ class LessonPage extends StatelessWidget {
                 addVerticalSpace(),
                 // TODO Paragraphs
                 if (subject.isIntroduction) ...[
-                  Text(subject.description,
+                  Text(subject.description.replaceAll('\\n', '\n'),
                       style:
                           const TextStyle(fontSize: kParagraph1, color: kGrey)),
                   addVerticalSpace(),

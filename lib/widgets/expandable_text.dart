@@ -24,7 +24,7 @@ class _ExpandableTextState extends State<ExpandableText>
                   ? const BoxConstraints()
                   : const BoxConstraints(maxHeight: 50.0),
               child: Text(
-                widget.text,
+                widget.text.replaceAll('\\n', '\n'),
                 softWrap: true,
                 overflow: TextOverflow.fade,
                 style: const TextStyle(fontSize: kParagraph1, color: kGrey),

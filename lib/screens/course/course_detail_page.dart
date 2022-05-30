@@ -21,11 +21,12 @@ class CourseDetailPage extends StatelessWidget {
 
   void nextLesson(BuildContext context) {
     Provider.of<UserStore>(context, listen: false)
-        .updateSubjectNumber(course.id);
+        .updateSubjectNumber(course.id ?? '0');
   }
 
   void finishLesson(BuildContext context) {
-    Provider.of<UserStore>(context, listen: false).finishLesson(course.id);
+    Provider.of<UserStore>(context, listen: false)
+        .finishLesson(course.id ?? '0');
   }
 
   Widget getLesson(Lesson lesson) {

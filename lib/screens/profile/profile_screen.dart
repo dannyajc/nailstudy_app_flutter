@@ -8,6 +8,7 @@ import 'package:nailstudy_app_flutter/screens/profile/add_license_screen.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 import 'package:nailstudy_app_flutter/widgets/progress_course.dart';
 import 'package:provider/provider.dart';
+import 'package:collection/collection.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -23,16 +24,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: kDefaultBackgroundColor,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: kSecondaryColor,
-          ),
-          iconSize: 20.0,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         centerTitle: true,
         title: const Text('Profiel',
             style: TextStyle(fontSize: kHeader2, color: kSecondaryColor)),
@@ -100,26 +91,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           userStore.user!.courses.isNotEmpty) {
                         return Consumer<CourseStore>(
                             builder: (context, courseStore, child) {
-                          if (courseStore.loading) {
+                          if (courseStore.loading || userStore.loading) {
                             return const CircularProgressIndicator.adaptive();
                           }
-                          return Column(
-                            children: userStore.user!.courses.map((e) {
-                              if (courseStore.courses != null) {
-                                return Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: kDefaultPadding),
-                                    child: ProgressCourse(
-                                      onPressEnabled: false,
-                                      userProgress: e,
-                                      course: courseStore.courses!.firstWhere(
-                                          (element) =>
-                                              element.id == e.courseId),
-                                    ));
-                              } else {
-                                return Container();
-                              }
-                            }).toList(),
+                          return Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: userStore.user!.courses.map((e) {
+                                  if (courseStore.courses != null &&
+                                      e.active == 0) {
+                                    var course = courseStore.courses!
+                                        .firstWhereOrNull((element) =>
+                                            element.id == e.courseId);
+                                    if (course != null) {
+                                      return Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: kDefaultPadding),
+                                          child: ProgressCourse(
+                                            onPressEnabled: false,
+                                            userProgress: e,
+                                            course: course,
+                                          ));
+                                    }
+                                    return Container();
+                                  } else {
+                                    return Container();
+                                  }
+                                }).toList(),
+                              ),
+                            ),
                           );
                         });
                       } else {

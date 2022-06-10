@@ -72,7 +72,7 @@ class _AppLayoutState extends State<AppLayout> {
                 });
               case 1:
                 return CupertinoTabView(builder: (context) {
-                  return const CupertinoPageScaffold(child: ChatScreen());
+                  return const CupertinoPageScaffold(child: ChatsScreen());
                 });
               case 2:
                 return CupertinoTabView(builder: (context) {

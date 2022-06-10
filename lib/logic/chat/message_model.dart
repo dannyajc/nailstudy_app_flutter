@@ -1,5 +1,3 @@
-import 'package:nailstudy_app_flutter/logic/courses/lesson_model.dart';
-
 class Message {
   String senderId;
   String receiverId;

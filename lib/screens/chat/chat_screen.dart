@@ -6,14 +6,14 @@ import 'package:nailstudy_app_flutter/logic/chat/chat_model.dart';
 import 'package:nailstudy_app_flutter/screens/chat/widgets/chat_item.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
-class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+class ChatsScreen extends StatefulWidget {
+  const ChatsScreen({Key? key}) : super(key: key);
 
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  _ChatsScreenState createState() => _ChatsScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatsScreenState extends State<ChatsScreen> {
   var _items = [];
 
   @override
@@ -40,7 +40,7 @@ class _ChatScreenState extends State<ChatScreen> {
         elevation: 0,
         backgroundColor: kDefaultBackgroundColor,
         centerTitle: true,
-        title: const Text('Chat',
+        title: const Text('Chats',
             style: TextStyle(fontSize: kHeader2, color: kSecondaryColor)),
       ),
       body: SafeArea(

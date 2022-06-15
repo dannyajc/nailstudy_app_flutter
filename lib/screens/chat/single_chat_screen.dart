@@ -33,8 +33,13 @@ class _SingleChatScreenState extends State<SingleChatScreen> {
       controller: _scrollController,
       physics: const BouncingScrollPhysics(),
       reverse: true,
+      sort: (a, b) => DateFormat("dd-MM-yyyy HH:mm:ss")
+          .parse(b.child('timeStamp').value!.toString())
+          .compareTo(DateFormat("dd-MM-yyyy HH:mm:ss")
+              .parse(a.child('timeStamp').value!.toString())),
       query: messageDao.getMessageQuery('123'),
       itemBuilder: (context, snapshot, animation, index) {
+        snapshot.child('timeStamp').value;
         final json = snapshot.value as Map<dynamic, dynamic>;
         final message = Message.fromJson(json);
         return MessageBubble(

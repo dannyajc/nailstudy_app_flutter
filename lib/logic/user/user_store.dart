@@ -29,6 +29,13 @@ class UserStore extends ChangeNotifier {
     return;
   }
 
+  Future<UserModel?> fetchUserById(String id) async {
+    var result = await ApiClient().post(Uri.parse(baseUrl + 'getUserById'),
+        body: jsonEncode({"userId": id}));
+    var user = UserModel.fromJson(jsonDecode(result.body));
+    return user;
+  }
+
   Future<void> registerUser(String firstName, String lastName, String email,
       String password, String phone) async {
     _loading = true;

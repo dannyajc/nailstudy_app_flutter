@@ -23,8 +23,18 @@ class Message {
         receiverId: json['receiverId'],
         timeStamp: json['timeStamp'],
         text: json['text'],
-        images: json['images'].cast<String>(),
+        images: (json['images'] != null) ? json['images'].cast<String>() : [],
         readAt: json['readAt'],
         submitForApprovalLevel: json['submitForApprovalLevel']);
   }
+
+  Map<dynamic, dynamic> toJson() => <dynamic, dynamic>{
+        'senderId': senderId,
+        'receiverId': receiverId,
+        'timeStamp': timeStamp,
+        'text': text,
+        'images': images,
+        'readAt': readAt,
+        'submitForApprovalLevel': submitForApprovalLevel,
+      };
 }

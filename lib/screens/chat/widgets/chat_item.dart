@@ -1,31 +1,31 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/logic/chat/chat_model.dart';
+import 'package:nailstudy_app_flutter/logic/user/user_model.dart';
 import 'package:nailstudy_app_flutter/screens/chat/single_chat_screen.dart';
 
 class ChatItem extends StatelessWidget {
   final ChatModel chat;
+  final UserModel endUser;
 
   const ChatItem({
     Key? key,
     required this.chat,
+    required this.endUser,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Get user and show name
-    var talkingTo = chat.userOne != FirebaseAuth.instance.currentUser?.uid
-        ? chat.userOne
-        : chat.userTwo;
-
     return GestureDetector(
       onTap: () => {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => SingleChatScreen(chat: chat)))
+                builder: (context) => SingleChatScreen(
+                      chat: chat,
+                      endUser: endUser,
+                    )))
       },
       child: SizedBox(
         height: 80,
@@ -49,7 +49,7 @@ class ChatItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(talkingTo,
+                      Text('${endUser.firstName} ${endUser.lastName} ',
                           style: const TextStyle(
                               fontSize: kHeader2, color: kSecondaryColor)),
                       const Text('Hier komt het laatste bericht',

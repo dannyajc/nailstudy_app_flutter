@@ -12,6 +12,7 @@ class UserModel {
   String address;
   String city;
   List<UserCourseModel> courses;
+  List<String> chats;
 
   UserModel({
     required this.id,
@@ -25,6 +26,7 @@ class UserModel {
     required this.address,
     required this.city,
     required this.courses,
+    required this.chats,
   });
 
   static UserModel fromJson(dynamic json) {
@@ -43,6 +45,7 @@ class UserModel {
             ? json['courses']
                 .map<UserCourseModel>((obj) => UserCourseModel.fromJson(obj))
                 .toList()
-            : []);
+            : [],
+        chats: json['chats'].cast<String>());
   }
 }

@@ -69,6 +69,146 @@
                     "readAt": null
                 }
             ]
+        },
+        {
+            "id": "123",
+            "userOne": "SAkxRuAN2LMAt0KzQNSWF4SK7Qt2",
+            "userTwo": "8mUfgRObyGgnDbstUl5MuXUSNeo2",
+            "messages": [
+                {
+                    "senderId": "8mUfgRObyGgnDbstUl5MuXUSNeo2",
+                    "receiverId": "SAkxRuAN2LMAt0KzQNSWF4SK7Qt2",
+                    "timeStamp": "2022-06-03 12:32:54",
+                    "text": "Dit is een testbericht, hallo daar!",
+                    "images": [
+                        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FOdd-eyed_cat&psig=AOvVaw2VVYBDXMpDTMCJC4wtp8j4&ust=1654346136120000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCOjhu-ClkfgCFQAAAAAdAAAAABAR",
+                        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FOdd-eyed_cat&psig=AOvVaw2VVYBDXMpDTMCJC4wtp8j4&ust=1654346136120000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCOjhu-ClkfgCFQAAAAAdAAAAABAR"
+                    ],
+                    "submitForApprovalLevel": 1,
+                    "readAt": null
+                },
+                {
+                    "senderId": "SAkxRuAN2LMAt0KzQNSWF4SK7Qt2",
+                    "receiverId": "8mUfgRObyGgnDbstUl5MuXUSNeo2",
+                    "timeStamp": "2022-06-03 12:37:54",
+                    "text": "Echt vet dat dit werkt!",
+                    "images": [],
+                    "submitForApprovalLevel": null,
+                    "readAt": null
+                },
+                {
+                    "senderId": "8mUfgRObyGgnDbstUl5MuXUSNeo2",
+                    "receiverId": "SAkxRuAN2LMAt0KzQNSWF4SK7Qt2",
+                    "timeStamp": "2022-06-03 12:32:54",
+                    "text": "Dit is een testbericht, hallo daar!",
+                    "images": [
+                        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FOdd-eyed_cat&psig=AOvVaw2VVYBDXMpDTMCJC4wtp8j4&ust=1654346136120000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCOjhu-ClkfgCFQAAAAAdAAAAABAR",
+                        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FOdd-eyed_cat&psig=AOvVaw2VVYBDXMpDTMCJC4wtp8j4&ust=1654346136120000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCOjhu-ClkfgCFQAAAAAdAAAAABAR"
+                    ],
+                    "submitForApprovalLevel": 1,
+                    "readAt": null
+                },
+                {
+                    "senderId": "SAkxRuAN2LMAt0KzQNSWF4SK7Qt2",
+                    "receiverId": "8mUfgRObyGgnDbstUl5MuXUSNeo2",
+                    "timeStamp": "2022-06-03 12:37:54",
+                    "text": "Echt vet dat dit werkt!",
+                    "images": [],
+                    "submitForApprovalLevel": null,
+                    "readAt": null
+                },
+                {
+                    "senderId": "8mUfgRObyGgnDbstUl5MuXUSNeo2",
+                    "receiverId": "SAkxRuAN2LMAt0KzQNSWF4SK7Qt2",
+                    "timeStamp": "2022-06-03 12:32:54",
+                    "text": "Dit is een testbericht, hallo daar!",
+                    "images": [
+                        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FOdd-eyed_cat&psig=AOvVaw2VVYBDXMpDTMCJC4wtp8j4&ust=1654346136120000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCOjhu-ClkfgCFQAAAAAdAAAAABAR",
+                        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FOdd-eyed_cat&psig=AOvVaw2VVYBDXMpDTMCJC4wtp8j4&ust=1654346136120000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCOjhu-ClkfgCFQAAAAAdAAAAABAR"
+                    ],
+                    "submitForApprovalLevel": 1,
+                    "readAt": null
+                },
+                {
+                    "senderId": "SAkxRuAN2LMAt0KzQNSWF4SK7Qt2",
+                    "receiverId": "8mUfgRObyGgnDbstUl5MuXUSNeo2",
+                    "timeStamp": "2022-06-03 12:37:54",
+                    "text": "Echt vet dat dit werkt!",
+                    "images": [],
+                    "submitForApprovalLevel": null,
+                    "readAt": null
+                }
+            ]
+        },
+        {
+            "id": "123",
+            "userOne": "SAkxRuAN2LMAt0KzQNSWF4SK7Qt2",
+            "userTwo": "8mUfgRObyGgnDbstUl5MuXUSNeo2",
+            "messages": [
+                {
+                    "senderId": "8mUfgRObyGgnDbstUl5MuXUSNeo2",
+                    "receiverId": "SAkxRuAN2LMAt0KzQNSWF4SK7Qt2",
+                    "timeStamp": "2022-06-03 12:32:54",
+                    "text": "Dit is een testbericht, hallo daar!",
+                    "images": [
+                        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FOdd-eyed_cat&psig=AOvVaw2VVYBDXMpDTMCJC4wtp8j4&ust=1654346136120000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCOjhu-ClkfgCFQAAAAAdAAAAABAR",
+                        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FOdd-eyed_cat&psig=AOvVaw2VVYBDXMpDTMCJC4wtp8j4&ust=1654346136120000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCOjhu-ClkfgCFQAAAAAdAAAAABAR"
+                    ],
+                    "submitForApprovalLevel": 1,
+                    "readAt": null
+                },
+                {
+                    "senderId": "SAkxRuAN2LMAt0KzQNSWF4SK7Qt2",
+                    "receiverId": "8mUfgRObyGgnDbstUl5MuXUSNeo2",
+                    "timeStamp": "2022-06-03 12:37:54",
+                    "text": "Echt vet dat dit werkt!",
+                    "images": [],
+                    "submitForApprovalLevel": null,
+                    "readAt": null
+                },
+                {
+                    "senderId": "8mUfgRObyGgnDbstUl5MuXUSNeo2",
+                    "receiverId": "SAkxRuAN2LMAt0KzQNSWF4SK7Qt2",
+                    "timeStamp": "2022-06-03 12:32:54",
+                    "text": "Dit is een testbericht, hallo daar!",
+                    "images": [
+                        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FOdd-eyed_cat&psig=AOvVaw2VVYBDXMpDTMCJC4wtp8j4&ust=1654346136120000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCOjhu-ClkfgCFQAAAAAdAAAAABAR",
+                        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FOdd-eyed_cat&psig=AOvVaw2VVYBDXMpDTMCJC4wtp8j4&ust=1654346136120000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCOjhu-ClkfgCFQAAAAAdAAAAABAR"
+                    ],
+                    "submitForApprovalLevel": 1,
+                    "readAt": null
+                },
+                {
+                    "senderId": "SAkxRuAN2LMAt0KzQNSWF4SK7Qt2",
+                    "receiverId": "8mUfgRObyGgnDbstUl5MuXUSNeo2",
+                    "timeStamp": "2022-06-03 12:37:54",
+                    "text": "Echt vet dat dit werkt!",
+                    "images": [],
+                    "submitForApprovalLevel": null,
+                    "readAt": null
+                },
+                {
+                    "senderId": "8mUfgRObyGgnDbstUl5MuXUSNeo2",
+                    "receiverId": "SAkxRuAN2LMAt0KzQNSWF4SK7Qt2",
+                    "timeStamp": "2022-06-03 12:32:54",
+                    "text": "Dit is een testbericht, hallo daar!",
+                    "images": [
+                        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FOdd-eyed_cat&psig=AOvVaw2VVYBDXMpDTMCJC4wtp8j4&ust=1654346136120000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCOjhu-ClkfgCFQAAAAAdAAAAABAR",
+                        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FOdd-eyed_cat&psig=AOvVaw2VVYBDXMpDTMCJC4wtp8j4&ust=1654346136120000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCOjhu-ClkfgCFQAAAAAdAAAAABAR"
+                    ],
+                    "submitForApprovalLevel": 1,
+                    "readAt": null
+                },
+                {
+                    "senderId": "SAkxRuAN2LMAt0KzQNSWF4SK7Qt2",
+                    "receiverId": "8mUfgRObyGgnDbstUl5MuXUSNeo2",
+                    "timeStamp": "2022-06-03 12:37:54",
+                    "text": "Echt vet dat dit werkt!",
+                    "images": [],
+                    "submitForApprovalLevel": null,
+                    "readAt": null
+                }
+            ]
         }
     ]
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 
 class MessageBubble extends StatelessWidget {
-  final String text;
+  final String? text;
   final bool sentByMe;
 
   const MessageBubble({
@@ -38,14 +38,16 @@ class MessageBubble extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Flexible(
-              child: Text(
-                text,
-                style: TextStyle(
-                    color: sentByMe ? Colors.white : kSecondaryColor,
-                    fontSize: kSubtitle1),
-              ),
-            ),
+            text != null
+                ? Flexible(
+                    child: Text(
+                      text!,
+                      style: TextStyle(
+                          color: sentByMe ? Colors.white : kSecondaryColor,
+                          fontSize: kSubtitle1),
+                    ),
+                  )
+                : Container(),
             const Padding(
               padding: EdgeInsets.only(left: kDefaultPadding),
               child: Text(

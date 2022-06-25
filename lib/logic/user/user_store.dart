@@ -113,4 +113,20 @@ class UserStore extends ChangeNotifier {
     _loading = false;
     notifyListeners();
   }
+
+  Future<String?> getChatId() async {
+    _loading = true;
+    notifyListeners();
+    var result = await ApiClient().post(Uri.parse(baseUrl + 'newChat'),
+        body: jsonEncode({
+          "userId": FirebaseAuth.instance.currentUser?.uid,
+          "receiverId": adminId
+        }));
+    if (result.statusCode != 404) {
+      return result.body;
+    }
+    _loading = false;
+    notifyListeners();
+    return null;
+  }
 }

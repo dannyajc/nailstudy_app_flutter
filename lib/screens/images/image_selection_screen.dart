@@ -1,11 +1,19 @@
 import 'dart:io';
 import 'package:collection/collection.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/logic/chat/message_dao.dart';
+import 'package:nailstudy_app_flutter/logic/chat/message_model.dart';
+import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
+import 'package:provider/provider.dart';
 
 class ImageSelectionScreen extends StatefulWidget {
   const ImageSelectionScreen({Key? key}) : super(key: key);
@@ -17,9 +25,10 @@ class ImageSelectionScreen extends StatefulWidget {
 class _ImageSelectionScreenState extends State<ImageSelectionScreen> {
   List<XFile> _imageFileList = [];
 
-  dynamic _pickImageError;
   final ImagePicker _picker = ImagePicker();
   String? _retrieveDataError;
+
+  final messageDao = MessageDao();
 
   void _onImageButtonPressed(ImageSource source,
       {BuildContext? context, bool isMultiImage = false}) async {
@@ -30,9 +39,7 @@ class _ImageSelectionScreenState extends State<ImageSelectionScreen> {
           _imageFileList = pickedFileList!;
         });
       } catch (e) {
-        setState(() {
-          _pickImageError = e;
-        });
+        setState(() {});
       }
     } else {
       try {
@@ -43,9 +50,7 @@ class _ImageSelectionScreenState extends State<ImageSelectionScreen> {
           _imageFileList.add(pickedFile!);
         });
       } catch (e) {
-        setState(() {
-          _pickImageError = e;
-        });
+        setState(() {});
       }
     }
   }
@@ -82,7 +87,7 @@ class _ImageSelectionScreenState extends State<ImageSelectionScreen> {
       return Row(
         children: _imageFileList.mapIndexed((index, e) {
           return Container(
-            padding: EdgeInsets.only(right: 5),
+            padding: const EdgeInsets.only(right: 5),
             child: Column(
               children: [
                 ClipRRect(
@@ -96,7 +101,7 @@ class _ImageSelectionScreenState extends State<ImageSelectionScreen> {
                 ),
                 addVerticalSpace(),
                 GestureDetector(
-                  child: Icon(
+                  child: const Icon(
                     Icons.highlight_off_outlined,
                     color: kGrey,
                     size: 30,
@@ -112,11 +117,6 @@ class _ImageSelectionScreenState extends State<ImageSelectionScreen> {
             ),
           );
         }).toList(),
-      );
-    } else if (_pickImageError != null) {
-      return Text(
-        'Pick image error: $_pickImageError',
-        textAlign: TextAlign.center,
       );
     } else {
       return Center(
@@ -176,12 +176,49 @@ class _ImageSelectionScreenState extends State<ImageSelectionScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
-            child: TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'Overslaan',
-                  style: TextStyle(color: kSecondaryColor),
-                )),
+            child: !Provider.of<UserStore>(context, listen: true).loading
+                ? TextButton(
+                    onPressed: () async {
+                      if (_imageFileList.isEmpty) {
+                        Navigator.popUntil(
+                            context, ModalRoute.withName('/courseDetail'));
+                      } else {
+                        var chatId =
+                            await Provider.of<UserStore>(context, listen: false)
+                                .getChatId();
+                        if (chatId != null) {
+                          _imageFileList.forEach((element) async {
+                            final destination = 'files/${element.name}';
+
+                            try {
+                              final ref =
+                                  FirebaseStorage.instance.ref(destination);
+                              File file = File(element.path);
+
+                              await ref.putFile(file);
+                            } catch (e) {
+                              print('error occured');
+                            }
+                          });
+
+                          // var now = DateTime.now().toLocal();
+                          // var formatter = DateFormat("d-M-yyyy HH:mm:ss");
+                          // var formattedDate = formatter.format(now);
+                          // var submission = Message(
+                          //     senderId:
+                          //         FirebaseAuth.instance.currentUser?.uid ?? '',
+                          //     receiverId: adminId,
+                          //     timeStamp: formattedDate,
+                          //     images: _imageFileList);
+                          // messageDao.sendMessage(submission, chatId);
+                        }
+                      }
+                    },
+                    child: Text(
+                      _imageFileList.isNotEmpty ? 'Verstuur' : 'Overslaan',
+                      style: const TextStyle(color: kSecondaryColor),
+                    ))
+                : const CircularProgressIndicator.adaptive(),
           )
         ],
         centerTitle: true,
@@ -193,32 +230,37 @@ class _ImageSelectionScreenState extends State<ImageSelectionScreen> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: FloatingActionButton(
-              onPressed: () {
-                _onImageButtonPressed(
-                  ImageSource.gallery,
-                  context: context,
-                  isMultiImage: true,
-                );
-              },
-              heroTag: 'image1',
-              tooltip: 'Pick Multiple Image from gallery',
-              child: const Icon(Icons.photo_library),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: FloatingActionButton(
-              onPressed: () {
-                _onImageButtonPressed(ImageSource.camera, context: context);
-              },
-              heroTag: 'image2',
-              tooltip: 'Take a Photo',
-              child: const Icon(Icons.camera_alt),
-            ),
-          ),
+          _imageFileList.length < 3
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      _onImageButtonPressed(
+                        ImageSource.gallery,
+                        context: context,
+                        isMultiImage: true,
+                      );
+                    },
+                    heroTag: 'image1',
+                    tooltip: 'Pick Multiple Image from gallery',
+                    child: const Icon(Icons.photo_library),
+                  ),
+                )
+              : Container(),
+          _imageFileList.length < 3
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      _onImageButtonPressed(ImageSource.camera,
+                          context: context);
+                    },
+                    heroTag: 'image2',
+                    tooltip: 'Take a Photo',
+                    child: const Icon(Icons.camera_alt),
+                  ),
+                )
+              : Container(),
         ],
       ),
     );

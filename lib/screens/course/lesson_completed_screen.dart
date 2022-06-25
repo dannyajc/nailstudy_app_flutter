@@ -149,14 +149,18 @@ class LessonCompletedScreen extends StatelessWidget {
                 ),
                 addVerticalSpace(),
                 lessonType == LessonType.practice
-                    ? const Align(
+                    ? Align(
                         alignment: Alignment.center,
-                        child: Text(
-                          'Overslaan',
-                          style: TextStyle(
-                              fontSize: kSubtitle1,
-                              color: kSecondaryColor,
-                              decoration: TextDecoration.underline),
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.popUntil(
+                                context, ModalRoute.withName('/courseDetail'));
+                          },
+                          child: const Text('Overslaan',
+                              style: TextStyle(
+                                  fontSize: kSubtitle1,
+                                  color: kSecondaryColor,
+                                  decoration: TextDecoration.underline)),
                         ),
                       )
                     : Container(),

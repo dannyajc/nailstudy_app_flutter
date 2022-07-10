@@ -6,6 +6,7 @@ class Message {
   List<String> images;
   String? readAt;
   num? submitForApprovalLevel;
+  String? courseId;
 
   Message({
     required this.senderId,
@@ -15,6 +16,7 @@ class Message {
     required this.images,
     this.readAt,
     this.submitForApprovalLevel,
+    this.courseId,
   });
 
   static Message fromJson(dynamic json) {
@@ -25,7 +27,8 @@ class Message {
         text: json['text'],
         images: (json['images'] != null) ? json['images'].cast<String>() : [],
         readAt: json['readAt'],
-        submitForApprovalLevel: json['submitForApprovalLevel']);
+        submitForApprovalLevel: json['submitForApprovalLevel'],
+        courseId: json['courseId']);
   }
 
   Map<dynamic, dynamic> toJson() => <dynamic, dynamic>{
@@ -36,5 +39,6 @@ class Message {
         'images': images,
         'readAt': readAt,
         'submitForApprovalLevel': submitForApprovalLevel,
+        'courseId': courseId,
       };
 }

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/logic/chat/chat_model.dart';
+import 'package:nailstudy_app_flutter/logic/chat/message_dao.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_model.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
 import 'package:nailstudy_app_flutter/screens/chat/widgets/chat_item.dart';
@@ -18,34 +19,49 @@ class ChatsScreen extends StatefulWidget {
 
 class _ChatsScreenState extends State<ChatsScreen> {
   var _items = [];
-  var _users = [];
+  final messageDao = MessageDao();
 
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
-      await readJson();
-    });
+    getAllChats(false);
   }
 
-  Future<void> readJson() async {
-    // TODO: Get the chats array from user
-    final String response = await rootBundle.loadString('assets/chat.json');
-    final data = await json.decode(response);
+  void getAllChats(bool onRefresh) async {
+    if (onRefresh) {
+      await Provider.of<UserStore>(context, listen: false).fetchSelf();
+    }
+    final myChats =
+        Provider.of<UserStore>(context, listen: false).user?.chats ?? [];
+
     setState(() {
-      _items = data["chat"];
+      _items = myChats;
     });
   }
 
-  Future<UserModel?> getTalkingTo(int index) async {
-    var chat = _items[index];
-    var talkingTo = chat["userOne"] != FirebaseAuth.instance.currentUser?.uid
-        ? chat["userOne"]
-        : chat["userTwo"];
-    var user = await Provider.of<UserStore>(context, listen: false)
-        .fetchUserById(talkingTo);
-    return user;
+  Future<ChatModel?> getChat(int index) async {
+    if (_items.isEmpty) {
+      return null;
+    } else {
+      var chatId = _items[index];
+      var ref = messageDao.getChatObject(chatId);
+      var chat = await ref.get().then((snap) {
+        var object = snap.value as Map;
+
+        var chat = ChatModel.fromJson({
+          "id": snap.key,
+          "userOne": object["userOne"],
+          "userTwo": object["userTwo"],
+          "messages": []
+        });
+        return chat;
+      }, onError: (err) {
+        print(err);
+        return null;
+      });
+
+      return chat;
+    }
   }
 
   @override
@@ -60,31 +76,33 @@ class _ChatsScreenState extends State<ChatsScreen> {
       ),
       body: SafeArea(
           child: RefreshIndicator(
-              onRefresh: () {
-                // TODO
-                return Future.delayed(const Duration(seconds: 2));
+              onRefresh: () async {
+                return getAllChats(true);
               },
               child: ListView.builder(
                   padding: const EdgeInsets.all(8),
-                  itemCount: _items.length,
+                  itemCount: _items.isEmpty ? 1 : _items.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return FutureBuilder<UserModel?>(
-                        future: getTalkingTo(index),
+                    return FutureBuilder<ChatModel?>(
+                        future: getChat(index),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            var chat = ChatModel.fromJson(_items[index]);
-
-                            var endUser = snapshot.data;
-                            if (endUser != null) {
-                              return ChatItem(
-                                chat: chat,
-                                endUser: endUser,
-                              );
-                            } else {
-                              return Container();
-                            }
+                            return ChatItem(
+                              chat: snapshot.data!,
+                            );
                           } else {
-                            return Container();
+                            return const Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(kDefaultPadding),
+                                child: Text(
+                                  'Geen chats gevonden.\n\n Er wordt automatisch een chat aangemaakt na de afronding van je eerste praktijk les.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: kSubtitle1,
+                                      color: kSecondaryColor),
+                                ),
+                              ),
+                            );
                           }
                         });
                   }))),

@@ -176,57 +176,72 @@ class _ImageSelectionScreenState extends State<ImageSelectionScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
-            child: !Provider.of<UserStore>(context, listen: true).loading
-                ? TextButton(
-                    onPressed: () async {
-                      if (_imageFileList.isEmpty) {
-                        Navigator.popUntil(
-                            context, ModalRoute.withName('/courseDetail'));
-                      } else {
-                        var chatId =
-                            await Provider.of<UserStore>(context, listen: false)
-                                .getChatId();
-                        if (chatId != null) {
-                          _imageFileList.forEach((element) async {
-                            final destination = 'files/${element.name}';
+            child: TextButton(
+                onPressed: () async {
+                  if (_imageFileList.isEmpty) {
+                    Navigator.popUntil(
+                        context, ModalRoute.withName('/courseDetail'));
+                  } else {
+                    var chatId =
+                        await Provider.of<UserStore>(context, listen: false)
+                            .getChatId();
+                    if (chatId != null) {
+                      _imageFileList.forEach((element) async {
+                        final destination = 'files/${element.name}';
 
-                            try {
-                              final ref =
-                                  FirebaseStorage.instance.ref(destination);
-                              File file = File(element.path);
+                        try {
+                          final ref = FirebaseStorage.instance.ref(destination);
+                          File file = File(element.path);
 
-                              await ref.putFile(file);
-                            } catch (e) {
-                              print('error occured');
-                            }
-                          });
+                          await ref.putFile(file);
 
-                          // var now = DateTime.now().toLocal();
-                          // var formatter = DateFormat("d-M-yyyy HH:mm:ss");
-                          // var formattedDate = formatter.format(now);
-                          // var submission = Message(
-                          //     senderId:
-                          //         FirebaseAuth.instance.currentUser?.uid ?? '',
-                          //     receiverId: adminId,
-                          //     timeStamp: formattedDate,
-                          //     images: _imageFileList);
-                          // messageDao.sendMessage(submission, chatId);
+                          Navigator.popUntil(
+                              context, ModalRoute.withName('/courseDetail'));
+                        } catch (e) {
+                          print('error occured');
                         }
-                      }
-                    },
-                    child: Text(
-                      _imageFileList.isNotEmpty ? 'Verstuur' : 'Overslaan',
-                      style: const TextStyle(color: kSecondaryColor),
-                    ))
-                : const CircularProgressIndicator.adaptive(),
+                      });
+
+                      var currentCourse =
+                          Provider.of<UserStore>(context, listen: false)
+                              .currentCourse;
+
+                      var now = DateTime.now().toLocal();
+                      var formatter = DateFormat("d-M-yyyy HH:mm:ss");
+                      var formattedDate = formatter.format(now);
+
+                      var submission = Message(
+                          senderId:
+                              FirebaseAuth.instance.currentUser?.uid ?? '',
+                          receiverId: adminId,
+                          timeStamp: formattedDate,
+                          images: _imageFileList.map((e) => e.name).toList(),
+                          courseId: currentCourse?.courseId,
+                          submitForApprovalLevel:
+                              currentCourse?.currentLessonNumber);
+
+                      messageDao.initiateChat(
+                          FirebaseAuth.instance.currentUser?.uid ?? "",
+                          adminId,
+                          chatId);
+                      messageDao.sendMessage(submission, chatId);
+                    }
+                  }
+                },
+                child: Text(
+                  _imageFileList.isNotEmpty ? 'Verstuur' : 'Overslaan',
+                  style: const TextStyle(color: kSecondaryColor),
+                )),
           )
         ],
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(kDefaultPadding),
-        child: _previewImages(),
-      ),
+      body: !Provider.of<UserStore>(context, listen: true).loading
+          ? Padding(
+              padding: const EdgeInsets.all(kDefaultPadding),
+              child: _previewImages(),
+            )
+          : const Center(child: CircularProgressIndicator.adaptive()),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[

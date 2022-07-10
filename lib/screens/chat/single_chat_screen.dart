@@ -11,6 +11,7 @@ import 'package:nailstudy_app_flutter/logic/chat/chat_model.dart';
 import 'package:nailstudy_app_flutter/logic/chat/message_dao.dart';
 import 'package:nailstudy_app_flutter/logic/chat/message_model.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_model.dart';
+import 'package:nailstudy_app_flutter/screens/chat/widgets/message_image_bubble.dart';
 
 import 'widgets/message_bubble.dart';
 
@@ -34,14 +35,21 @@ class _SingleChatScreenState extends State<SingleChatScreen> {
     return FirebaseAnimatedList(
       controller: _scrollController,
       physics: const BouncingScrollPhysics(),
-      query: messageDao.getMessageQuery('123').orderByValue(),
+      query: messageDao.getMessageQuery(widget.chat.id).orderByValue(),
       itemBuilder: (context, snapshot, animation, index) {
         final json = snapshot.value as Map<dynamic, dynamic>;
         final message = Message.fromJson(json);
+        if (message.images.isNotEmpty) {
+          return MessageImageBubble(
+              index: index,
+              images: message.images,
+              sentByMe:
+                  message.senderId == FirebaseAuth.instance.currentUser?.uid);
+        }
         return MessageBubble(
             text: message.text?.trim(),
             sentByMe:
-                (message.senderId == FirebaseAuth.instance.currentUser?.uid));
+                message.senderId == FirebaseAuth.instance.currentUser?.uid);
       },
     );
   }

@@ -19,4 +19,8 @@ class MessageDao {
   Query getMessageQuery(String chatId) {
     return messagesRef.child('chat/$chatId/messages');
   }
+
+  DatabaseReference getChatObject(String chatId) {
+    return messagesRef.child('chat/$chatId');
+  }
 }

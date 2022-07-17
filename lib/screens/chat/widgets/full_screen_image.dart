@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class FullScreenImage extends StatelessWidget {
@@ -13,8 +14,8 @@ class FullScreenImage extends StatelessWidget {
         child: Center(
           child: Hero(
             tag: heroTag,
-            child: Image.network(
-              url,
+            child: CachedNetworkImage(
+              imageUrl: url,
             ),
           ),
         ),

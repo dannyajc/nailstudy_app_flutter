@@ -4,11 +4,13 @@ import 'package:nailstudy_app_flutter/constants.dart';
 class MessageBubble extends StatelessWidget {
   final String? text;
   final bool sentByMe;
+  final String timeStamp;
 
   const MessageBubble({
     Key? key,
     required this.text,
     required this.sentByMe,
+    required this.timeStamp,
   }) : super(key: key);
 
   @override
@@ -48,11 +50,11 @@ class MessageBubble extends StatelessWidget {
                     ),
                   )
                 : Container(),
-            const Padding(
-              padding: EdgeInsets.only(left: kDefaultPadding),
+            Padding(
+              padding: const EdgeInsets.only(left: kDefaultPadding),
               child: Text(
-                '12:40',
-                style: TextStyle(color: kGrey, fontSize: kParagraph1),
+                timeStamp,
+                style: const TextStyle(color: kGrey, fontSize: kParagraph1),
               ),
             ),
           ],

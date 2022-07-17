@@ -51,9 +51,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Danny Janssen',
-                      style: TextStyle(
+                    Text(
+                      (Provider.of<UserStore>(context).user?.firstName ?? '') +
+                          ' ' +
+                          (Provider.of<UserStore>(context).user?.lastName ??
+                              ''),
+                      style: const TextStyle(
                           color: kSecondaryColor,
                           fontSize: kHeader2,
                           fontWeight: FontWeight.bold),

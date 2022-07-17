@@ -1,13 +1,9 @@
-import 'dart:convert';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/logic/chat/chat_model.dart';
 import 'package:nailstudy_app_flutter/logic/chat/message_dao.dart';
-import 'package:nailstudy_app_flutter/logic/user/user_model.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
 import 'package:nailstudy_app_flutter/screens/chat/widgets/chat_item.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
 
 class ChatsScreen extends StatefulWidget {
@@ -52,8 +48,10 @@ class _ChatsScreenState extends State<ChatsScreen> {
           "id": snap.key,
           "userOne": object["userOne"],
           "userTwo": object["userTwo"],
-          "messages": []
+          "messages": object["messages"].values.toList()
         });
+        chat.messages.sort(((a, b) => a.timeStamp.compareTo(b.timeStamp)));
+
         return chat;
       }, onError: (err) {
         print(err);

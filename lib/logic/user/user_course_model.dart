@@ -8,6 +8,7 @@ class UserCourseModel {
   bool finished;
   String licenseCode;
   int active;
+  bool pendingApproval;
 
   UserCourseModel(
       {required this.id,
@@ -18,7 +19,8 @@ class UserCourseModel {
       required this.currentSubjectNumber,
       required this.finished,
       required this.licenseCode,
-      required this.active});
+      required this.active,
+      required this.pendingApproval});
 
   static UserCourseModel fromJson(dynamic json) {
     return UserCourseModel(
@@ -31,6 +33,7 @@ class UserCourseModel {
       finished: json['finished'],
       licenseCode: json['licenseCode'],
       active: json['active'],
+      pendingApproval: json['pendingApproval'] ?? false,
     );
   }
 }

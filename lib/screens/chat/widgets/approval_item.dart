@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
+import 'package:provider/provider.dart';
 
 class ApprovalItem extends StatelessWidget {
   final String courseName;
-  const ApprovalItem({Key? key, required this.courseName}) : super(key: key);
+  final String courseId;
+  final String endUserId;
+
+  const ApprovalItem({
+    Key? key,
+    required this.courseName,
+    required this.courseId,
+    required this.endUserId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,22 +26,15 @@ class ApprovalItem extends StatelessWidget {
         Row(
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Provider.of<UserStore>(context, listen: false)
+                    .approveLesson(courseId, endUserId);
+                Navigator.pop(context);
+              },
               icon: const Icon(
                 Icons.check_circle_outlined,
                 size: 35,
                 color: kAccentColor,
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.cancel_outlined,
-                size: 35,
-                color: kErrorColor,
               ),
             ),
           ],

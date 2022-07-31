@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +9,14 @@ import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/logic/chat/chat_model.dart';
 import 'package:nailstudy_app_flutter/logic/chat/message_dao.dart';
 import 'package:nailstudy_app_flutter/logic/chat/message_model.dart';
+import 'package:nailstudy_app_flutter/logic/courses/course_store.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_course_model.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_model.dart';
+import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
 import 'package:nailstudy_app_flutter/screens/chat/widgets/approval_item.dart';
 import 'package:nailstudy_app_flutter/screens/chat/widgets/message_image_bubble.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
+import 'package:provider/provider.dart';
 
 import 'widgets/message_bubble.dart';
 
@@ -103,21 +105,37 @@ class _SingleChatScreenState extends State<SingleChatScreen> {
     });
   }
 
-  List<ApprovalItem> getPendingApprovals(List<UserCourseModel> courses) {
+  List<ApprovalItem>? getPendingApprovals(List<UserCourseModel> courses) {
     List<UserCourseModel> pendingCourses = [];
     courses.forEach((course) {
-      if (course.pendingApproval) {
+      if (course.pendingApproval && !course.finished) {
         pendingCourses.add(course);
       }
     });
 
-    return pendingCourses
-        .map((e) => ApprovalItem(courseName: e.courseId))
-        .toList();
+    var pending = [];
+    for (var e in pendingCourses) {
+      var course = Provider.of<CourseStore>(context, listen: false)
+          .courses
+          ?.firstWhere((course) => course.id == e.courseId);
+
+      if (course != null) {
+        pending.add(ApprovalItem(
+          courseName: course.name,
+          courseId: e.courseId,
+          endUserId: widget.endUser.id,
+        ));
+      }
+    }
+
+    if (pending.isNotEmpty) {
+      return pending.cast<ApprovalItem>();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    var self = Provider.of<UserStore>(context, listen: false).user;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -136,53 +154,57 @@ class _SingleChatScreenState extends State<SingleChatScreen> {
           },
         ),
         actions: [
-          IconButton(
-              onPressed: () {
-                showModalBottomSheet<void>(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(30),
-                    ),
-                  ),
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  context: context,
-                  builder: (BuildContext context) {
-                    return SingleChildScrollView(
-                      child: Wrap(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(kDefaultPadding),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  height: 6,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(2),
-                                      color: kPrimaryColor),
-                                ),
-                                addVerticalSpace(),
-                                const Text(
-                                    'De volgende cursussen moeten nog worden goedgekeurd',
-                                    style: TextStyle(
-                                        fontSize: kHeader2,
-                                        color: kSecondaryColor)),
-                                addVerticalSpace(),
-                                addVerticalSpace(),
-                                ...getPendingApprovals(widget.endUser.courses),
-                              ],
-                            ),
-                          ),
-                        ],
+          if (self != null && self.isAdmin)
+            IconButton(
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(30),
                       ),
-                    );
-                  },
-                );
-              },
-              icon: const Icon(Icons.pending_actions_outlined),
-              color: kGrey)
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SingleChildScrollView(
+                        child: Wrap(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(kDefaultPadding),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    height: 6,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(2),
+                                        color: kPrimaryColor),
+                                  ),
+                                  addVerticalSpace(),
+                                  const Text(
+                                      'De volgende cursussen moeten nog worden goedgekeurd',
+                                      style: TextStyle(
+                                          fontSize: kHeader2,
+                                          color: kSecondaryColor)),
+                                  addVerticalSpace(),
+                                  addVerticalSpace(),
+                                  ...?getPendingApprovals(
+                                      widget.endUser.courses),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+                icon: const Icon(Icons.pending_actions_outlined),
+                color: kGrey)
+          else
+            Container()
         ],
       ),
       body: SafeArea(

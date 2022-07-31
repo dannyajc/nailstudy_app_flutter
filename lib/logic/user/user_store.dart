@@ -85,7 +85,7 @@ class UserStore extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setNewPendingApproval(String courseId, String userId) async {
+  Future<void> setNewPendingApproval(String courseId) async {
     _loading = true;
     notifyListeners();
     var result = await ApiClient().post(
@@ -97,6 +97,15 @@ class UserStore extends ChangeNotifier {
     if (result.statusCode != 404) {
       _user = UserModel.fromJson(jsonDecode(result.body));
     }
+    _loading = false;
+    notifyListeners();
+  }
+
+  Future<void> approveLesson(String courseId, String userId) async {
+    _loading = true;
+    notifyListeners();
+    await ApiClient().post(Uri.parse(baseUrl + 'approveLesson'),
+        body: jsonEncode({"userId": userId, "courseId": courseId}));
     _loading = false;
     notifyListeners();
   }

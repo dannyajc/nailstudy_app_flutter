@@ -229,8 +229,7 @@ class _ImageSelectionScreenState extends State<ImageSelectionScreen> {
                       if (currentCourse != null &&
                           FirebaseAuth.instance.currentUser != null) {
                         Provider.of<UserStore>(context, listen: false)
-                            .setNewPendingApproval(currentCourse.courseId,
-                                FirebaseAuth.instance.currentUser!.uid);
+                            .setNewPendingApproval(currentCourse.courseId);
                       }
                     }
                   }

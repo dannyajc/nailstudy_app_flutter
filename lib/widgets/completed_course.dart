@@ -1,11 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/logic/courses/course_model.dart';
+import 'package:nailstudy_app_flutter/logic/user/user_course_model.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 import 'package:nailstudy_app_flutter/widgets/completed_indicator.dart';
 
 class CompletedCourse extends StatelessWidget {
+  final UserCourseModel userProgress;
+  final CourseModel course;
+
   const CompletedCourse({
+    required this.userProgress,
+    required this.course,
     Key? key,
   }) : super(key: key);
 
@@ -38,16 +45,16 @@ class CompletedCourse extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('#78K6HY5',
-                style: TextStyle(fontSize: kParagraph1, color: kGrey)),
-            const Text('Basic Acrylic Nails',
+            Text(userProgress.licenseCode,
+                style: const TextStyle(fontSize: kParagraph1, color: kGrey)),
+            Text(course.name,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
+                style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: kSubtitle1,
                     color: kSecondaryColor)),
             addVerticalSpace(height: 5.0),
-            const CompletedIndicator()
+            CompletedIndicator(state: userProgress.active)
           ],
         ),
       ],

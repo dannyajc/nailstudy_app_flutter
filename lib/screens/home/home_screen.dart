@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/logic/courses/course_model.dart';
 import 'package:nailstudy_app_flutter/logic/courses/course_store.dart';
+import 'package:nailstudy_app_flutter/logic/user/user_course_model.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
 import 'package:nailstudy_app_flutter/screens/home/widgets/progress_card.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
@@ -18,6 +20,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<CompletedCourse> getCompletedAndInvalidCourses(
+      List<UserCourseModel> userCourses, List<CourseModel>? courses) {
+    var completedCourses = [];
+    userCourses.forEach((e) {
+      if (courses != null &&
+          courses.isNotEmpty &&
+          (e.finished || e.active != 0)) {
+        var course =
+            courses.firstWhereOrNull((element) => element.id == e.courseId);
+        if (course != null) {
+          completedCourses.add(CompletedCourse(
+            userProgress: e,
+            course: course,
+          ));
+        }
+      }
+    });
+    return completedCourses.cast<CompletedCourse>();
+  }
+
   @override
   void initState() {
     Provider.of<CourseStore>(context, listen: false).fetchAllCourses();
@@ -145,7 +167,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: userStore.user!.courses.map((e) {
                                   if (courseStore.courses != null &&
                                       courseStore.courses!.isNotEmpty &&
-                                      e.active == 0) {
+                                      e.active == 0 &&
+                                      !e.finished) {
                                     var course = courseStore.courses!
                                         .firstWhereOrNull((element) =>
                                             element.id == e.courseId);
@@ -202,21 +225,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ).createShader(rect);
                               },
                               blendMode: BlendMode.dstOut,
-                              child: GridView.count(
-                                primary: false,
-                                scrollDirection: Axis.horizontal,
-                                childAspectRatio: .35,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                                crossAxisCount: 1,
-                                children: const <Widget>[
-                                  // TODO: Change to real completed courses
-                                  CompletedCourse(),
-                                  CompletedCourse(),
-                                  CompletedCourse(),
-                                  CompletedCourse(),
-                                ],
-                              ),
+                              child: Consumer<UserStore>(
+                                  builder: (context, userStore, child) {
+                                if (userStore.user != null &&
+                                    userStore.user!.courses.isNotEmpty) {
+                                  return Consumer<CourseStore>(
+                                      builder: (context, courseStore, child) {
+                                    if (courseStore.loading) {
+                                      return const CircularProgressIndicator
+                                          .adaptive();
+                                    }
+                                    return GridView.count(
+                                      primary: false,
+                                      scrollDirection: Axis.horizontal,
+                                      childAspectRatio: .35,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 0,
+                                      crossAxisCount: 1,
+                                      children: [
+                                        ...getCompletedAndInvalidCourses(
+                                            userStore.user!.courses,
+                                            courseStore.courses)
+                                      ],
+                                    );
+                                  });
+                                } else {
+                                  return Container();
+                                }
+                              }),
                             )),
                       ],
                     ),

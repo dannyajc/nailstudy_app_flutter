@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/logic/courses/course_store.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
+import 'package:nailstudy_app_flutter/screens/login/login_screen.dart';
 import 'package:nailstudy_app_flutter/screens/profile/add_license_screen.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 import 'package:nailstudy_app_flutter/widgets/progress_course.dart';
@@ -27,6 +29,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
         title: const Text('Profiel',
             style: TextStyle(fontSize: kHeader2, color: kSecondaryColor)),
+        actions: [
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+              child: Builder(
+                  builder: (context) => IconButton(
+                        icon: const Icon(
+                          Icons.menu,
+                          color: kGrey,
+                        ),
+                        onPressed: () => Scaffold.of(context).openEndDrawer(),
+                      )))
+        ],
+      ),
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: kPrimaryColor,
+              ),
+              child: Text(
+                'Profiel',
+                style: TextStyle(fontSize: kHeader1, color: kSecondaryColor),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.logout,
+                color: kSecondaryColor,
+              ),
+              minLeadingWidth: 10,
+              title: const Text('Uitloggen',
+                  style: TextStyle(fontSize: kHeader2, color: kSecondaryColor)),
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                  CupertinoPageRoute(
+                    builder: (BuildContext context) {
+                      return const LoginScreen();
+                    },
+                  ),
+                  (_) => false,
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: SafeArea(
           child: Stack(children: [

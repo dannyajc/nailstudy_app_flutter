@@ -18,14 +18,14 @@ class UserStore extends ChangeNotifier {
   bool _loading = false;
   bool get loading => _loading;
 
-  Future<void> fetchSelf() async {
+  Future<void> fetchSelf({bool shouldNotify = true}) async {
     _loading = true;
-    notifyListeners();
+    if (shouldNotify) notifyListeners();
     var result = await ApiClient().post(Uri.parse(baseUrl + 'getUser'),
         body: jsonEncode({"uid": FirebaseAuth.instance.currentUser?.uid}));
     _user = UserModel.fromJson(jsonDecode(result.body));
     _loading = false;
-    notifyListeners();
+    if (shouldNotify) notifyListeners();
     return;
   }
 

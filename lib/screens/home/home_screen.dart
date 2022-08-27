@@ -160,8 +160,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             return Consumer<CourseStore>(
                                 builder: (context, courseStore, child) {
                               if (courseStore.loading) {
-                                return const CircularProgressIndicator
-                                    .adaptive();
+                                return const SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: CircularProgressIndicator.adaptive(),
+                                );
                               }
                               return Column(
                                 children: userStore.user!.courses.map((e) {
@@ -232,8 +235,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   return Consumer<CourseStore>(
                                       builder: (context, courseStore, child) {
                                     if (courseStore.loading) {
-                                      return const CircularProgressIndicator
-                                          .adaptive();
+                                      return const SizedBox(
+                                        width: 50,
+                                        height: 50,
+                                        child: CircularProgressIndicator
+                                            .adaptive(),
+                                      );
                                     }
                                     return GridView.count(
                                       primary: false,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
 import 'package:nailstudy_app_flutter/screens/app_layout.dart';
+import 'package:nailstudy_app_flutter/screens/login/password_reset_screen.dart';
 import 'package:nailstudy_app_flutter/screens/login/register_screen.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
 import 'package:nailstudy_app_flutter/widgets/primary_button.dart';
@@ -158,11 +159,19 @@ class _LoginScreenState extends State<LoginScreen> {
               autocorrect: false,
             ),
             addVerticalSpace(),
-            const Align(
+            Align(
               alignment: Alignment.centerRight,
-              child: Text('Wachtwoord vergeten',
-                  style:
-                      TextStyle(fontSize: kParagraph1, color: kSecondaryColor)),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => const PasswordResetScreen()));
+                },
+                child: const Text('Wacthwoord vergeten',
+                    style: TextStyle(
+                        fontSize: kParagraph1, color: kSecondaryColor)),
+              ),
             ),
             const Spacer(),
             Align(

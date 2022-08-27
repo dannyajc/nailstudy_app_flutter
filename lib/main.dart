@@ -31,12 +31,12 @@ void initialization(BuildContext context) async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  Future<User> getUser(BuildContext context) async {
+  Future<User?> getUser(BuildContext context) async {
     if (FirebaseAuth.instance.currentUser != null) {
       await Provider.of<UserStore>(context, listen: false)
           .fetchSelf(shouldNotify: false);
+      return Future<User>.value(FirebaseAuth.instance.currentUser);
     }
-    return Future<User>.value(FirebaseAuth.instance.currentUser);
   }
 
   @override
@@ -47,9 +47,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'SF Pro Display',
       ),
-      home: FutureBuilder<User>(
+      home: FutureBuilder<User?>(
           future: getUser(context),
-          builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
             if (snapshot.hasData) {
               User? user = snapshot.data;
               if (!Provider.of<UserStore>(context, listen: false).loading) {

@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_course_model.dart';
 import 'package:nailstudy_app_flutter/logic/utils/api_client.dart';
+import 'package:nailstudy_app_flutter/logic/utils/auth_status.dart';
 
 import 'user_model.dart';
 
@@ -18,12 +19,20 @@ class UserStore extends ChangeNotifier {
   bool _loading = false;
   bool get loading => _loading;
 
+  AuthStatus _authStatus = AuthStatus.unknown;
+  AuthStatus get authStatus => _authStatus;
+
   Future<void> fetchSelf({bool shouldNotify = true}) async {
     _loading = true;
     if (shouldNotify) notifyListeners();
     var result = await ApiClient().post(Uri.parse(baseUrl + 'getUser'),
         body: jsonEncode({"uid": FirebaseAuth.instance.currentUser?.uid}));
-    _user = UserModel.fromJson(jsonDecode(result.body));
+    try {
+      _user = UserModel.fromJson(jsonDecode(result.body));
+      _authStatus = AuthStatus.successful;
+    } on FirebaseAuthException catch (e) {
+      _authStatus = AuthExceptionHandler.handleAuthException(e);
+    }
     _loading = false;
     if (shouldNotify) notifyListeners();
     return;
@@ -54,6 +63,15 @@ class UserStore extends ChangeNotifier {
     _loading = false;
     notifyListeners();
     return;
+  }
+
+  Future<AuthStatus> resetPassword({required String email}) async {
+    await FirebaseAuth.instance
+        .sendPasswordResetEmail(email: email)
+        .then((value) => _authStatus = AuthStatus.successful)
+        .catchError(
+            (e) => _authStatus = AuthExceptionHandler.handleAuthException(e));
+    return _authStatus;
   }
 
   Future<String?> activateCourse(String licenseCode) async {

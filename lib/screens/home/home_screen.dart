@@ -147,9 +147,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     fontSize: kHeader2,
                                     color: kSecondaryColor)),
                             //TODO BUTTON
-                            Text('Toon alles',
-                                style:
-                                    TextStyle(fontSize: kHeader2, color: kGrey))
+                            // Text('Toon alles',
+                            //     style:
+                            //         TextStyle(fontSize: kHeader2, color: kGrey))
                           ],
                         ),
                         addVerticalSpace(),
@@ -205,9 +205,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     fontSize: kHeader2,
                                     color: kSecondaryColor)),
                             //TODO BUTTON
-                            Text('Toon alles',
-                                style:
-                                    TextStyle(fontSize: kHeader2, color: kGrey))
+                            // Text('Toon alles',
+                            //     style:
+                            //         TextStyle(fontSize: kHeader2, color: kGrey))
                           ],
                         ),
                         addVerticalSpace(),

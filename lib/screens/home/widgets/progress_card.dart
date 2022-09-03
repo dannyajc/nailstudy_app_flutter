@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
+import 'package:provider/provider.dart';
 
 class ProgressCard extends StatelessWidget {
   const ProgressCard({
@@ -9,6 +11,12 @@ class ProgressCard extends StatelessWidget {
   }) : super(key: key);
 
   final Size screen;
+
+  int? getAllCourses(BuildContext context) {
+    var amountOfCourses =
+        Provider.of<UserStore>(context, listen: false).user?.courses.length;
+    return amountOfCourses;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +37,8 @@ class ProgressCard extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
+                  children: [
+                    const Text(
                       'Jouw vooruitgang',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -38,8 +46,11 @@ class ProgressCard extends StatelessWidget {
                           color: kSecondaryColor),
                     ),
                     Text(
-                      'Je hebt 4 cursussen in de afgelopen 6 maanden afgrond. Goed bezig!',
-                      style: TextStyle(
+                      'Je hebt in totaal ${getAllCourses(context)} cursussen gevolgd. ' +
+                          ((getAllCourses(context) ?? 0) > 0
+                              ? 'Goed bezig!'
+                              : ''),
+                      style: const TextStyle(
                           fontSize: kParagraph1, color: kSecondaryColor),
                     ),
                   ],

@@ -72,8 +72,11 @@ class _LoginScreenState extends State<LoginScreen> {
           case 'wrong-password':
             content = 'De ingevoerde inloggegevens zijn onjuist';
             break;
+          default:
+            content = 'Er ging iets mis';
+            break;
         }
-        print(error.message);
+
         showDialog(
             context: context,
             builder: (BuildContext context) {

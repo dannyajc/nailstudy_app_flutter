@@ -38,6 +38,21 @@ class UserStore extends ChangeNotifier {
     return;
   }
 
+  Future<void> modifyAvatar(String avatarPath) async {
+    _loading = true;
+    notifyListeners();
+
+    await ApiClient().post(Uri.parse(baseUrl + 'modifyUser'),
+        body: jsonEncode({
+          "uid": FirebaseAuth.instance.currentUser?.uid,
+          "avatar": avatarPath
+        }));
+
+    notifyListeners();
+    _loading = false;
+    return;
+  }
+
   Future<UserModel?> fetchUserById(String id) async {
     _loading = true;
     var result = await ApiClient().post(Uri.parse(baseUrl + 'getUserById'),

@@ -1,7 +1,12 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/logic/courses/course_store.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
@@ -20,6 +25,108 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final ref = FirebaseStorage.instance.ref();
+  List<XFile> _imageFileList = [];
+
+  final ImagePicker _picker = ImagePicker();
+  String? _retrieveDataError;
+
+  void _onImageButtonPressed(ImageSource source, BuildContext context,
+      {bool isMultiImage = false}) async {
+    {
+      try {
+        final pickedFile = await _picker.pickImage(
+          source: source,
+        );
+        if (pickedFile != null) {
+          final destination = 'files/${pickedFile.name}';
+          final ref = FirebaseStorage.instance.ref(destination);
+          File file = File(pickedFile.path);
+
+          await ref.putFile(file);
+
+          Provider.of<UserStore>(context, listen: false)
+              .modifyAvatar(destination);
+          Timer(const Duration(seconds: 2), () {
+            Provider.of<UserStore>(context, listen: false).fetchSelf();
+          });
+        }
+      } catch (e) {
+        _getRetrieveErrorWidget();
+        setState(() {});
+      }
+    }
+  }
+
+  Future<void> retrieveLostData() async {
+    final LostDataResponse response = await _picker.retrieveLostData();
+    if (response.isEmpty) {
+      return;
+    }
+    if (response.file != null) {
+      setState(() {
+        _imageFileList = response.files!;
+      });
+    } else {
+      _retrieveDataError = response.exception!.code;
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Er ging iets mis.."),
+              content: Text(_retrieveDataError!),
+              actions: [
+                TextButton(
+                  child: const Text("Ok"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          });
+    }
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void _getRetrieveErrorWidget() {
+    if (_retrieveDataError != null) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Er ging iets mis.."),
+              content: Text(_retrieveDataError!),
+              actions: [
+                TextButton(
+                  child: const Text("Ok"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          });
+    }
+  }
+
+  Future<String?> getDownloadUrl(avatar) async {
+    if (avatar == "") {
+      return null;
+    }
+    var image = ref.child(avatar);
+    return image.getDownloadURL();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,9 +157,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               decoration: BoxDecoration(
                 color: kPrimaryColor,
               ),
-              child: Text(
-                'Profiel',
-                style: TextStyle(fontSize: kHeader1, color: kSecondaryColor),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  'Profiel',
+                  style: TextStyle(fontSize: kHeader1, color: kSecondaryColor),
+                ),
               ),
             ),
             ListTile(
@@ -72,6 +182,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                   ),
                   (_) => false,
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.portrait,
+                color: kSecondaryColor,
+              ),
+              minLeadingWidth: 10,
+              title: const Text('Profielfoto wijzigen',
+                  style: TextStyle(fontSize: kHeader2, color: kSecondaryColor)),
+              onTap: () async {
+                _onImageButtonPressed(
+                  ImageSource.gallery,
+                  context,
+                  isMultiImage: true,
                 );
               },
             ),
@@ -202,12 +328,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.asset(
-                  'assets/images/profile.jpg',
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
+                child:
+                    Consumer<UserStore>(builder: (context, userStore, child) {
+                  return userStore.loading && userStore.user != null
+                      ? const CircularProgressIndicator.adaptive()
+                      : FutureBuilder(
+                          future: getDownloadUrl(userStore.user!.avatar),
+                          builder: ((context, snapshot) {
+                            return snapshot.hasData
+                                ? CachedNetworkImage(
+                                    imageUrl: snapshot.data.toString(),
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) =>
+                                        const CircularProgressIndicator
+                                            .adaptive(),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  )
+                                : Image.asset(
+                                    'assets/images/default_avatar.png',
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  );
+                          }),
+                        );
+                }),
               ),
             ),
           ),

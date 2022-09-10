@@ -25,8 +25,8 @@ class CourseDetailPage extends StatelessWidget {
   }
 
   void finishLesson(BuildContext context) {
-    Provider.of<UserStore>(context, listen: false)
-        .finishLesson(course.id ?? '0');
+    // Provider.of<UserStore>(context, listen: false)
+    //     .finishLesson(course.id ?? '0');
   }
 
   Widget getLesson(Lesson lesson) {

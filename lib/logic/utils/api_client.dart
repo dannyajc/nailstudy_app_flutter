@@ -8,7 +8,7 @@ class ApiClient extends http.BaseClient {
 
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
-    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken(true);
     Map defaultHeaders = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'

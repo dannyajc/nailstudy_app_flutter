@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -24,6 +26,8 @@ class ChatItem extends StatefulWidget {
 }
 
 class _ChatItemState extends State<ChatItem> {
+  final ref = FirebaseStorage.instance.ref();
+
   Future<UserModel?> getEndUser() async {
     var talkingTo =
         widget.chat.userOne != FirebaseAuth.instance.currentUser?.uid
@@ -53,6 +57,14 @@ class _ChatItemState extends State<ChatItem> {
     return '...';
   }
 
+  Future<String?> getDownloadUrl(avatar) async {
+    if (avatar == "") {
+      return null;
+    }
+    var image = ref.child(avatar);
+    return image.getDownloadURL();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<UserModel?>(
@@ -77,14 +89,30 @@ class _ChatItemState extends State<ChatItem> {
                     child: Row(
                       children: [
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: Image.asset(
-                            'assets/images/profile.jpg',
-                            width: 64,
-                            height: 64,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                            borderRadius: BorderRadius.circular(50),
+                            child: FutureBuilder(
+                              future: getDownloadUrl(snapshot.data!.avatar),
+                              builder: ((context, snapshot) {
+                                return snapshot.hasData
+                                    ? CachedNetworkImage(
+                                        imageUrl: snapshot.data.toString(),
+                                        width: 64,
+                                        height: 64,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            const CircularProgressIndicator
+                                                .adaptive(),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                      )
+                                    : Image.asset(
+                                        'assets/images/default_avatar.png',
+                                        width: 64,
+                                        height: 64,
+                                        fit: BoxFit.cover,
+                                      );
+                              }),
+                            )),
                         Padding(
                           padding: const EdgeInsets.only(left: kDefaultPadding),
                           child: Column(

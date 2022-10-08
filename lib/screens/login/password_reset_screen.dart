@@ -32,7 +32,7 @@ class _RegisterScreenState extends State<PasswordResetScreen> {
 
     if (emailValid) {
       Provider.of<UserStore>(context, listen: false)
-          .resetPassword(email: emailController.text)
+          .resetPassword(email: emailController.text.trim())
           .then((value) => {
                 if (!Provider.of<UserStore>(context, listen: false).loading &&
                     Provider.of<UserStore>(context, listen: false).authStatus ==

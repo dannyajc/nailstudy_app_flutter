@@ -19,7 +19,7 @@ const kHeader1 = 26.0;
 const kHeader2 = 16.0;
 const kHeader3 = 16.0;
 const kSubtitle1 = 14.0;
-const kParagraph1 = 11.0;
+const kParagraph1 = 12.0;
 
 const kTabBarHeight = 50;
 
@@ -29,3 +29,6 @@ const kTabBarHeight = 50;
 const baseUrl = 'https://us-central1-nailstudy-backend-v2.cloudfunctions.net/';
 
 const adminId = '8mUfgRObyGgnDbstUl5MuXUSNeo2';
+
+const kDefaultImage =
+    'https://images.unsplash.com/photo-1533158628620-7e35717d36e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2400&q=80';

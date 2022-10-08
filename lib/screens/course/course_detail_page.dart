@@ -15,8 +15,12 @@ import 'package:provider/provider.dart';
 class CourseDetailPage extends StatelessWidget {
   final CourseModel course;
   final UserCourseModel userProgress;
+  final String courseImage;
   const CourseDetailPage(
-      {Key? key, required this.course, required this.userProgress})
+      {Key? key,
+      required this.course,
+      required this.userProgress,
+      required this.courseImage})
       : super(key: key);
 
   void nextLesson(BuildContext context) {
@@ -109,8 +113,7 @@ class CourseDetailPage extends StatelessWidget {
                   ],
                 ),
                 child: CachedNetworkImage(
-                  imageUrl:
-                      'https://images.unsplash.com/photo-1533158628620-7e35717d36e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2400&q=80',
+                  imageUrl: courseImage,
                   imageBuilder: (context, imageProvider) => Container(
                     width: MediaQuery.of(context).size.width - 40,
                     height: 200.0,

@@ -13,6 +13,7 @@ class Paragraph {
     return Paragraph(
         title: json['title'],
         description: json['description'],
-        images: json['images'].length != 0 ? json['images'] : []);
+        images:
+            json['images'].length != 0 ? json['images'].cast<String>() : []);
   }
 }

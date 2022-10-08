@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
@@ -11,7 +12,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class ProgressCourse extends StatelessWidget {
+class ProgressCourse extends StatefulWidget {
   final UserCourseModel userProgress;
   final CourseModel course;
   final bool detailScreenVersion;
@@ -26,109 +27,137 @@ class ProgressCourse extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<ProgressCourse> createState() => _ProgressCourseState();
+}
+
+class _ProgressCourseState extends State<ProgressCourse> {
+  final ref = FirebaseStorage.instance.ref();
+
+  Future<String?> getDownloadUrl(imageUrl) async {
+    if (imageUrl == "") {
+      return null;
+    }
+    var image = ref.child(imageUrl);
+    return image.getDownloadURL();
+  }
+
+  @override
   Widget build(BuildContext context) {
     DateTime expiryDate =
-        DateFormat("d-M-yyyy HH:mm:ss").parse(userProgress.expiryDate);
+        DateFormat("d-M-yyyy HH:mm:ss").parse(widget.userProgress.expiryDate);
 
-    var progressPercentage =
-        (userProgress.currentLessonNumber - 1) / (course.lessons?.length ?? 0);
+    var progressPercentage = (widget.userProgress.currentLessonNumber - 1) /
+        (widget.course.lessons?.length ?? 0);
 
-    return GestureDetector(
-      onTap: detailScreenVersion || !onPressEnabled
-          ? null
-          : () {
-              Provider.of<UserStore>(context, listen: false)
-                  .setCurrentUserCourse(userProgress);
-              Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      settings: const RouteSettings(name: "/courseDetail"),
-                      builder: (context) => CourseDetailPage(
-                          course: course, userProgress: userProgress)));
-            },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-                right: detailScreenVersion ? 0 : kDefaultPadding),
-            // TODO: Change course image
-            child: !detailScreenVersion
-                ? CachedNetworkImage(
-                    imageUrl:
-                        'https://images.unsplash.com/photo-1533158628620-7e35717d36e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2400&q=80',
-                    imageBuilder: (context, imageProvider) => Container(
-                      width: 70.0,
-                      height: 70.0,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(8.0),
-                        image: DecorationImage(
-                            image: imageProvider, fit: BoxFit.cover),
-                      ),
-                    ),
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator.adaptive(),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  )
-                : null,
-          ),
-          Flexible(
-            flex: 1,
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                      detailScreenVersion
-                          ? 'Licentie code ${userProgress.licenseCode}'
-                          : userProgress.licenseCode,
-                      style:
-                          const TextStyle(fontSize: kParagraph1, color: kGrey)),
-                  Text(course.name,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: detailScreenVersion ? kHeader2 : kSubtitle1,
-                          color: kSecondaryColor)),
-                  detailScreenVersion
-                      ? Text(
-                          '${(course.lessons?.length ?? userProgress.currentLessonNumber) - userProgress.currentLessonNumber + 1} van ${course.lessons?.length} lessen te gaan',
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              fontSize: kParagraph1, color: kSecondaryColor))
-                      : ExpiryIndicator(
-                          daysLeft: expiryDate
-                              .difference(DateTime.now())
-                              .inDays
-                              .toInt(),
+    return FutureBuilder(
+        future: getDownloadUrl(widget.course.image),
+        builder: ((context, snapshot) {
+          return GestureDetector(
+            onTap: widget.detailScreenVersion || !widget.onPressEnabled
+                ? null
+                : () {
+                    Provider.of<UserStore>(context, listen: false)
+                        .setCurrentUserCourse(widget.userProgress);
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            settings:
+                                const RouteSettings(name: "/courseDetail"),
+                            builder: (context) => CourseDetailPage(
+                                course: widget.course,
+                                userProgress: widget.userProgress,
+                                courseImage: snapshot.data.toString())));
+                  },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                      right: widget.detailScreenVersion ? 0 : kDefaultPadding),
+                  // TODO: Change course image
+                  child: !widget.detailScreenVersion
+                      ? CachedNetworkImage(
+                          imageUrl: snapshot.hasData
+                              ? snapshot.data.toString()
+                              : kDefaultImage,
+                          imageBuilder: (context, imageProvider) => Container(
+                            width: 70.0,
+                            height: 70.0,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(8.0),
+                              image: DecorationImage(
+                                  image: imageProvider, fit: BoxFit.cover),
+                            ),
+                          ),
+                          placeholder: (context, url) =>
+                              const CircularProgressIndicator.adaptive(),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
                         )
-                ],
-              ),
+                      : null,
+                ),
+                Flexible(
+                  flex: 1,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                            widget.detailScreenVersion
+                                ? 'Licentie code ${widget.userProgress.licenseCode}'
+                                : widget.userProgress.licenseCode,
+                            style: const TextStyle(
+                                fontSize: kParagraph1, color: kGrey)),
+                        Text(widget.course.name,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: widget.detailScreenVersion
+                                    ? kHeader2
+                                    : kSubtitle1,
+                                color: kSecondaryColor)),
+                        widget.detailScreenVersion
+                            ? Text(
+                                '${(widget.course.lessons?.length ?? widget.userProgress.currentLessonNumber) - widget.userProgress.currentLessonNumber + 1} van ${widget.course.lessons?.length} lessen te gaan',
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: kParagraph1,
+                                    color: kSecondaryColor))
+                            : ExpiryIndicator(
+                                daysLeft: expiryDate
+                                    .difference(DateTime.now())
+                                    .inDays
+                                    .toInt(),
+                              )
+                      ],
+                    ),
+                  ),
+                ),
+                CircularPercentIndicator(
+                  radius: 60.0,
+                  lineWidth: 3.0,
+                  animation: true,
+                  percent: (progressPercentage.isNaN || progressPercentage == 0)
+                      ? .02
+                      : progressPercentage,
+                  center: Text(
+                    // TODO CALCULATE PERCENTAGE
+                    '${progressPercentage.isNaN ? 0.0 : progressPercentage * 100}%',
+                    style:
+                        const TextStyle(fontSize: 12, color: kSecondaryColor),
+                  ),
+                  circularStrokeCap: CircularStrokeCap.butt,
+                  backgroundColor: kLightGrey,
+                  progressColor: progressPercentage == 1.0
+                      ? kAccentColor
+                      : kCompletedColor,
+                ),
+              ],
             ),
-          ),
-          CircularPercentIndicator(
-            radius: 60.0,
-            lineWidth: 3.0,
-            animation: true,
-            percent: (progressPercentage.isNaN || progressPercentage == 0)
-                ? .02
-                : progressPercentage,
-            center: Text(
-              // TODO CALCULATE PERCENTAGE
-              '${progressPercentage.isNaN ? 0.0 : progressPercentage * 100}%',
-              style: const TextStyle(fontSize: 12, color: kSecondaryColor),
-            ),
-            circularStrokeCap: CircularStrokeCap.butt,
-            backgroundColor: kLightGrey,
-            progressColor:
-                progressPercentage == 1.0 ? kAccentColor : kCompletedColor,
-          ),
-        ],
-      ),
-    );
+          );
+        }));
   }
 }

@@ -51,11 +51,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         (acceptedTerms != null && acceptedTerms == true)) {
       Provider.of<UserStore>(context, listen: false)
           .registerUser(
-              firstNameController.text,
-              lastNameController.text,
-              emailController.text,
-              passwordController.text,
-              phoneController.text)
+              firstNameController.text.trim(),
+              lastNameController.text.trim(),
+              emailController.text.trim(),
+              passwordController.text.trim(),
+              phoneController.text.trim())
           .then((value) => {
                 if (!Provider.of<UserStore>(context, listen: false).loading)
                   {
@@ -195,6 +195,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             fontSize: kParagraph1, color: kErrorColor)),
                   CupertinoTextField(
                     controller: phoneController,
+                    keyboardType: TextInputType.phone,
                     placeholder: 'Telefoonnummer',
                     padding: const EdgeInsets.all(kDefaultPadding),
                     decoration: BoxDecoration(
@@ -209,7 +210,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             fontSize: kParagraph1, color: kErrorColor)),
                   CheckboxListTile(
                       contentPadding: EdgeInsets.zero,
-                      title: const Text('Ik ga akkoord met de voorwaarden'),
+                      title: const Text(
+                          'Ik ga akkoord met de voorwaarden.\nZie website.'),
                       activeColor: Colors.amber,
                       value: acceptedTerms ?? false,
                       onChanged: (newValue) {

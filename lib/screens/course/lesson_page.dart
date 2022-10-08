@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
@@ -12,7 +13,7 @@ import 'package:nailstudy_app_flutter/utils/spacing.dart';
 import 'package:collection/collection.dart';
 import 'package:provider/provider.dart';
 
-class LessonPage extends StatelessWidget {
+class LessonPage extends StatefulWidget {
   final Lesson lesson;
   final LessonType lessonType;
   final Subject subject;
@@ -34,17 +35,39 @@ class LessonPage extends StatelessWidget {
     required this.finishLesson,
   }) : super(key: key);
 
+  @override
+  State<LessonPage> createState() => _LessonPageState();
+}
+
+class _LessonPageState extends State<LessonPage> {
+  final ref = FirebaseStorage.instance.ref();
+
+  Future<List<String>?> getDownloadUrls(List<String> paths) async {
+    if (paths.isEmpty) {
+      return null;
+    }
+
+    var futures = Future.wait<String>(
+        paths.map((path) => ref.child(path).getDownloadURL()));
+
+    return futures;
+  }
+
   List<Widget> getParagraphs() {
-    return subject.paragraphs
+    return widget.subject.paragraphs
             ?.mapIndexed(
-              (index, paragraph) => SubjectParagraph(
-                  title: lessonType == LessonType.practice
-                      ? 'Stap ${index + 1} | ${paragraph.title}'
-                      : paragraph.title,
-                  imageUrl:
-                      // TODO: replace
-                      'https://images.unsplash.com/photo-1533158628620-7e35717d36e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2400&q=80',
-                  text: paragraph.description),
+              (index, paragraph) => FutureBuilder(
+                  future: paragraph.images != null
+                      ? getDownloadUrls(paragraph.images!)
+                      : null,
+                  builder: ((context, snapshot) => SubjectParagraph(
+                      title: widget.lessonType == LessonType.practice
+                          ? 'Stap ${index + 1} | ${paragraph.title}'
+                          : paragraph.title,
+                      imageUrls: snapshot.hasData
+                          ? (snapshot.data as List<String>)
+                          : null,
+                      text: paragraph.description))),
             )
             .toList() ??
         [];
@@ -52,7 +75,7 @@ class LessonPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasBackButton = currentSubject != 0;
+    final hasBackButton = widget.currentSubject != 0;
 
     return SingleChildScrollView(
       child: Column(
@@ -96,21 +119,22 @@ class LessonPage extends StatelessWidget {
               children: [
                 addVerticalSpace(),
                 Text(
-                  lessonType == LessonType.theory ? 'Theorie' : 'Praktijk',
+                  widget.lessonType == LessonType.theory
+                      ? 'Theorie'
+                      : 'Praktijk',
                   style: const TextStyle(
                       fontSize: kParagraph1, color: kSecondaryColor),
                 ),
                 Text(
-                  subject.title,
+                  widget.subject.title,
                   style: const TextStyle(
                       fontSize: kHeader2,
                       fontWeight: FontWeight.bold,
                       color: kSecondaryColor),
                 ),
                 addVerticalSpace(),
-                // TODO Paragraphs
-                if (subject.isIntroduction) ...[
-                  Text(subject.description.replaceAll('\\n', '\n'),
+                if (widget.subject.description.isNotEmpty) ...[
+                  Text(widget.subject.description.replaceAll('\\n', '\n'),
                       style:
                           const TextStyle(fontSize: kParagraph1, color: kGrey)),
                   addVerticalSpace(),
@@ -120,7 +144,7 @@ class LessonPage extends StatelessWidget {
                   ),
                   addVerticalSpace()
                 ],
-                if (!subject.isIntroduction) ...getParagraphs(),
+                if (!widget.subject.isIntroduction) ...getParagraphs(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -132,7 +156,7 @@ class LessonPage extends StatelessWidget {
                               color: kPrimaryColor,
                               borderRadius: BorderRadius.circular(8.0),
                               onPressed: () {
-                                pageController.previousPage(
+                                widget.pageController.previousPage(
                                     duration: const Duration(milliseconds: 400),
                                     curve: Curves.easeInOut);
                               },
@@ -183,21 +207,21 @@ class LessonPage extends StatelessWidget {
                               Provider.of<UserStore>(context, listen: false)
                                   .currentCourse;
 
-                          if (currentSubject == totalPages - 1) {
+                          if (widget.currentSubject == widget.totalPages - 1) {
                             if (currentCourse != null &&
                                 currentCourse.currentLessonNumber <=
-                                    lesson.lessonNumber &&
-                                lessonType == LessonType.practice) {
-                              finishLesson(context);
+                                    widget.lesson.lessonNumber &&
+                                widget.lessonType == LessonType.practice) {
+                              widget.finishLesson(context);
                             }
                             Navigator.push(
                                 context,
                                 CupertinoPageRoute(
                                     builder: (context) => LessonCompletedScreen(
-                                          lessonType: lessonType,
+                                          lessonType: widget.lessonType,
                                         )));
                           } else {
-                            pageController.nextPage(
+                            widget.pageController.nextPage(
                                 duration: const Duration(milliseconds: 400),
                                 curve: Curves.easeInOut);
                           }
@@ -212,7 +236,7 @@ class LessonPage extends StatelessWidget {
                                 : MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                currentSubject == totalPages - 1
+                                widget.currentSubject == widget.totalPages - 1
                                     ? 'Afronden'
                                     : 'Volgende',
                                 style: const TextStyle(

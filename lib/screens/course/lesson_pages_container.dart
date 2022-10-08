@@ -33,6 +33,8 @@ class _LessonPagerContainerState extends State<LessonPagerContainer> {
   Widget build(BuildContext context) {
     // TODO: initial page to where the user left off
     final PageController controller = PageController();
+    widget.subjects
+        .sort(((a, b) => a.subjectNumber.compareTo(b.subjectNumber)));
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

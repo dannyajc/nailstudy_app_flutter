@@ -51,7 +51,8 @@ class _LoginScreenState extends State<LoginScreen> {
     if (passwordValid && emailValid) {
       firebaseAuth
           .signInWithEmailAndPassword(
-              email: emailController.text, password: passwordController.text)
+              email: emailController.text.trim(),
+              password: passwordController.text.trim())
           .then((result) async {
         Provider.of<UserStore>(context, listen: false).fetchSelf().then((_) => {
               if (!Provider.of<UserStore>(context, listen: false).loading)

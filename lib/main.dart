@@ -8,10 +8,11 @@ import 'package:nailstudy_app_flutter/screens/app_layout.dart';
 import 'package:nailstudy_app_flutter/screens/login/login_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FlutterNativeSplash.removeAfter(initialization);
   initializeDateFormatting('nl_NL', null).then((_) => runApp(MultiProvider(
         providers: [

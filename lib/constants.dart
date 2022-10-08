@@ -25,7 +25,7 @@ const kTabBarHeight = 50;
 
 // Data
 // const baseUrl = 'http://localhost:5001/nailstudy-backend-a1c76/us-central1/';
-const baseUrl = 'http://10.0.2.2:5001/nailstudy-backend-a1c76/us-central1/';
-// const baseUrl = 'https://us-central1-nailstudy-backend-v2.cloudfunctions.net/';
+// const baseUrl = 'http://10.0.2.2:5001/nailstudy-backend-a1c76/us-central1/';
+const baseUrl = 'https://us-central1-nailstudy-backend-v2.cloudfunctions.net/';
 
 const adminId = '8mUfgRObyGgnDbstUl5MuXUSNeo2';

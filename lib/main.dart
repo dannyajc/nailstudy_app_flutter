@@ -11,8 +11,11 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  initialization();
   initializeDateFormatting('nl_NL', null).then((_) => runApp(MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => UserStore()),
@@ -22,7 +25,7 @@ void main() async {
       )));
 }
 
-void initialization(BuildContext context) async {
+void initialization() async {
   print('ready in 3...');
   await Future.delayed(const Duration(seconds: 1));
   print('go!');

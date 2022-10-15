@@ -13,7 +13,6 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  FlutterNativeSplash.removeAfter(initialization);
   initializeDateFormatting('nl_NL', null).then((_) => runApp(MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => UserStore()),
@@ -27,6 +26,7 @@ void initialization(BuildContext context) async {
   print('ready in 3...');
   await Future.delayed(const Duration(seconds: 1));
   print('go!');
+  FlutterNativeSplash.remove();
 }
 
 class MyApp extends StatelessWidget {

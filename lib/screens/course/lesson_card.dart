@@ -176,7 +176,7 @@ class LessonCard extends StatelessWidget {
                   Row(
                     children: [
                       const Icon(
-                        Icons.class__outlined,
+                        Icons.class_outlined,
                         color: kGrey,
                         size: 20,
                       ),

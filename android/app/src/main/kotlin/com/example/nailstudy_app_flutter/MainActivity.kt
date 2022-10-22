@@ -1,4 +1,4 @@
-package com.example.nailstudy_app_flutter
+package nl.gailsnailacademy.nailstudy
 
 import io.flutter.embedding.android.FlutterActivity
 

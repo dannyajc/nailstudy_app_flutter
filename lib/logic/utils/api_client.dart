@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 class ApiClient extends http.BaseClient {
-  http.Client _httpClient = new http.Client();
+  final http.Client _httpClient = http.Client();
 
   ApiClient();
 

@@ -26,7 +26,7 @@ class UserStore extends ChangeNotifier {
     _loading = true;
     if (shouldNotify) notifyListeners();
     var result = await ApiClient().post(Uri.parse(baseUrl + 'getUser'),
-        body: jsonEncode({"uid": FirebaseAuth.instance.currentUser?.uid}));
+        body: jsonEncode({"userId": FirebaseAuth.instance.currentUser?.uid}));
     try {
       _user = UserModel.fromJson(jsonDecode(result.body));
       _authStatus = AuthStatus.successful;
@@ -44,7 +44,7 @@ class UserStore extends ChangeNotifier {
 
     await ApiClient().post(Uri.parse(baseUrl + 'modifyUser'),
         body: jsonEncode({
-          "uid": FirebaseAuth.instance.currentUser?.uid,
+          "userId": FirebaseAuth.instance.currentUser?.uid,
           "avatar": avatarPath
         }));
 

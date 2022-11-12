@@ -35,7 +35,7 @@ class _ImageSelectionScreenState extends State<ImageSelectionScreen> {
       try {
         final pickedFileList = await _picker.pickMultiImage();
         setState(() {
-          _imageFileList = pickedFileList!;
+          _imageFileList = pickedFileList;
         });
       } catch (e) {
         setState(() {});

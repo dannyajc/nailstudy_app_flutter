@@ -3,7 +3,7 @@
    <application
         android:label="Nail Study"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/launcher_icon_adaptive">
         <activity
             android:name=".MainActivity"
             android:exported="true"

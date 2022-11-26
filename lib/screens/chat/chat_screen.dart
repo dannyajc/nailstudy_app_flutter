@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
 import 'package:nailstudy_app_flutter/logic/chat/chat_model.dart';
 import 'package:nailstudy_app_flutter/logic/chat/message_dao.dart';
@@ -50,7 +51,11 @@ class _ChatsScreenState extends State<ChatsScreen> {
           "userTwo": object["userTwo"],
           "messages": object["messages"].values.toList()
         });
-        chat.messages.sort(((a, b) => a.timeStamp.compareTo(b.timeStamp)));
+
+        var formatter = DateFormat("d-M-yyyy HH:mm:ss");
+        chat.messages.sort((a, b) => formatter
+            .parse(a.timeStamp)
+            .compareTo(formatter.parse(b.timeStamp)));
 
         return chat;
       }, onError: (err) {

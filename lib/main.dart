@@ -15,25 +15,59 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  initialization();
-  initializeDateFormatting('nl_NL', null).then((_) => runApp(MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => UserStore()),
-          ChangeNotifierProvider(create: (context) => CourseStore()),
-        ],
-        child: const MyApp(),
-      )));
+  await initialization();
+  await initializeDateFormatting('nl_NL', null)
+      .then((_) => runApp(MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (context) => UserStore()),
+              ChangeNotifierProvider(create: (context) => CourseStore()),
+            ],
+            child: const MyApp(),
+          )));
 }
 
-void initialization() async {
+Future<void> initialization() async {
   print('ready in 3...');
   await Future.delayed(const Duration(seconds: 1));
+  FirebaseAuth.instance.authStateChanges().listen((User? user) {
+    if (user != null) {
+      user.reload();
+    }
+  });
   print('go!');
   FlutterNativeSplash.remove();
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget with WidgetsBindingObserver {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      FirebaseAuth.instance.authStateChanges().listen((User? user) {
+        if (user != null) {
+          user.reload();
+        }
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
   Future<User?> getUser(BuildContext context) async {
     if (FirebaseAuth.instance.currentUser != null) {
@@ -41,6 +75,7 @@ class MyApp extends StatelessWidget {
           .fetchSelf(shouldNotify: false);
       return Future<User>.value(FirebaseAuth.instance.currentUser);
     }
+    return null;
   }
 
   @override

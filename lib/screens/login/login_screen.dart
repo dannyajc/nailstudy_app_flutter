@@ -146,7 +146,8 @@ class _LoginScreenState extends State<LoginScreen> {
               placeholder: 'E-mailadres',
               padding: const EdgeInsets.all(kDefaultPadding),
               decoration: BoxDecoration(
-                  color: kLightGrey, borderRadius: BorderRadius.circular(8.0)),
+                  color: kLightGrey,
+                  borderRadius: BorderRadius.circular(kDefaultBorderRadius)),
               autocorrect: false,
             ),
             addVerticalSpace(),
@@ -158,7 +159,8 @@ class _LoginScreenState extends State<LoginScreen> {
               placeholder: 'Wachtwoord',
               padding: const EdgeInsets.all(kDefaultPadding),
               decoration: BoxDecoration(
-                  color: kLightGrey, borderRadius: BorderRadius.circular(8.0)),
+                  color: kLightGrey,
+                  borderRadius: BorderRadius.circular(kDefaultBorderRadius)),
               obscureText: true,
               autocorrect: false,
             ),

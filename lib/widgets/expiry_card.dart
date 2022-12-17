@@ -42,7 +42,7 @@ class ExpiryCard extends StatelessWidget {
       height: 80,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(kDefaultBorderRadius),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),

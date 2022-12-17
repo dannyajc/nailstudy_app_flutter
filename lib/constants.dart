@@ -22,6 +22,7 @@ const kSubtitle1 = 14.0;
 const kParagraph1 = 12.0;
 
 const kTabBarHeight = 50;
+const kDefaultBorderRadius = 8.0;
 
 // Data
 // const baseUrl = 'http://localhost:5001/nailstudy-backend-a1c76/us-central1/';

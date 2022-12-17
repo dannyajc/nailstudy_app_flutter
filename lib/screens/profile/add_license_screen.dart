@@ -156,7 +156,8 @@ class _AddLicenseScreenState extends State<AddLicenseScreen> {
                                             decoration: BoxDecoration(
                                               shape: BoxShape.rectangle,
                                               borderRadius:
-                                                  BorderRadius.circular(8.0),
+                                                  BorderRadius.circular(
+                                                      kDefaultBorderRadius),
                                               image: DecorationImage(
                                                   image: imageProvider,
                                                   fit: BoxFit.cover),

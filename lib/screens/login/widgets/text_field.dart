@@ -10,7 +10,8 @@ class TextField extends StatelessWidget {
       height: 60,
       width: 60,
       decoration: BoxDecoration(
-          color: kLightGrey, borderRadius: BorderRadius.circular(8.0)),
+          color: kLightGrey,
+          borderRadius: BorderRadius.circular(kDefaultBorderRadius)),
     );
   }
 }

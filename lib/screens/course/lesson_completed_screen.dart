@@ -106,7 +106,7 @@ class LessonCompletedScreen extends StatelessWidget {
                 CupertinoButton(
                   padding: const EdgeInsets.all(0),
                   color: kPrimaryColor,
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(kDefaultBorderRadius),
                   onPressed: () {
                     if (lessonType == LessonType.theory) {
                       Navigator.popUntil(

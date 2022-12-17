@@ -119,7 +119,7 @@ class CourseDetailPage extends StatelessWidget {
                     height: 200.0,
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(kDefaultBorderRadius),
                       image: DecorationImage(
                           image: imageProvider, fit: BoxFit.cover),
                     ),

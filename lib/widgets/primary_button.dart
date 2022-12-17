@@ -15,7 +15,7 @@ class PrimaryButton extends StatelessWidget {
     return CupertinoButton(
       padding: const EdgeInsets.all(0),
       color: kPrimaryColor,
-      borderRadius: BorderRadius.circular(8.0),
+      borderRadius: BorderRadius.circular(kDefaultBorderRadius),
       onPressed: onPress,
       child: Container(
         alignment: Alignment.center,

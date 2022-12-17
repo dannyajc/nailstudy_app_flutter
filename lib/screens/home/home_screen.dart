@@ -85,7 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   height: 35.0,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(8.0),
+                                    borderRadius: BorderRadius.circular(
+                                        kDefaultBorderRadius),
                                     image: DecorationImage(
                                         image: imageProvider,
                                         fit: BoxFit.cover),
@@ -112,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             //   width: 35,
                             //   height: 35,
                             //   decoration: BoxDecoration(
-                            //     borderRadius: BorderRadius.circular(8.0),
+                            //     borderRadius: BorderRadius.circular(kDefaultBorderRadius),
                             //     color: kLightGrey,
                             //   ),
                             //   child: const Center(
@@ -238,8 +239,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       return const SizedBox(
                                         width: 50,
                                         height: 50,
-                                        child: CircularProgressIndicator
-                                            .adaptive(),
                                       );
                                     }
                                     return GridView.count(

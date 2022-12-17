@@ -32,7 +32,7 @@ class CompletedCourse extends StatelessWidget {
               height: 90.0,
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(8.0),
+                borderRadius: BorderRadius.circular(kDefaultBorderRadius),
                 image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
               ),
             ),

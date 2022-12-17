@@ -119,7 +119,7 @@ class LessonCard extends StatelessWidget {
                 height: 80.0,
                 decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(kDefaultBorderRadius),
                   image: DecorationImage(
                     image: imageProvider,
                     fit: BoxFit.cover,
@@ -133,7 +133,8 @@ class LessonCard extends StatelessWidget {
                 ),
                 child: !available
                     ? ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderRadius:
+                            BorderRadius.circular(kDefaultBorderRadius),
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
                           child: Container(

@@ -47,10 +47,29 @@ class _LessonPageState extends State<LessonPage> {
       return null;
     }
 
-    var futures = Future.wait<String>(
-        paths.map((path) => ref.child(path).getDownloadURL()));
+    var futures = Future.wait<String>(paths.map((path) {
+      return ref.child(path).getDownloadURL();
+    }));
 
     return futures;
+  }
+
+  Future<String?> getBannerPhoto() async {
+    var path = "";
+
+    if (widget.subject.isIntroduction) {
+      path = widget.lessonType == LessonType.theory
+          ? (widget.lesson.theory.image ?? kDefaultImage)
+          : (widget.lesson.practice.image ?? kDefaultImage);
+    } else {
+      path = widget.subject.image ?? "";
+    }
+
+    if (path.isEmpty) {
+      return null;
+    }
+
+    return ref.child(path).getDownloadURL();
   }
 
   List<Widget> getParagraphs() {
@@ -62,7 +81,8 @@ class _LessonPageState extends State<LessonPage> {
                       : null,
                   builder: ((context, snapshot) => SubjectParagraph(
                       title: widget.lessonType == LessonType.practice
-                          ? 'Stap ${index + 1} | ${paragraph.title}'
+                          // 17-12-22 Removed paragraph.title here since it was not needed anymore
+                          ? 'Stap ${index + 1}'
                           : paragraph.title,
                       imageUrls: snapshot.hasData
                           ? (snapshot.data as List<String>)
@@ -93,23 +113,47 @@ class _LessonPageState extends State<LessonPage> {
                   ),
                 ],
               ),
-              child: CachedNetworkImage(
-                imageUrl:
-                    'https://images.unsplash.com/photo-1533158628620-7e35717d36e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2400&q=80',
-                imageBuilder: (context, imageProvider) => Container(
-                  width: MediaQuery.of(context).size.width - 40,
-                  height: 200.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(8.0),
-                    image: DecorationImage(
-                        image: imageProvider, fit: BoxFit.cover),
-                  ),
-                ),
-                placeholder: (context, url) =>
-                    const CircularProgressIndicator.adaptive(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+              child: FutureBuilder(
+                future: getBannerPhoto(),
+                builder: ((context, snapshot) {
+                  if (snapshot.hasData) {
+                    return CachedNetworkImage(
+                      imageUrl: snapshot.data.toString(),
+                      imageBuilder: (context, imageProvider) => Container(
+                        width: MediaQuery.of(context).size.width - 40,
+                        height: 200.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius:
+                              BorderRadius.circular(kDefaultBorderRadius),
+                          image: DecorationImage(
+                              image: imageProvider, fit: BoxFit.cover),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    );
+                  }
+                  return const SizedBox();
+                }),
               ),
+              // child: CachedNetworkImage(
+              //   imageUrl:
+              //       'https://images.unsplash.com/photo-1533158628620-7e35717d36e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2400&q=80',
+              //   imageBuilder: (context, imageProvider) => Container(
+              //     width: MediaQuery.of(context).size.width - 40,
+              //     height: 200.0,
+              //     decoration: BoxDecoration(
+              //       shape: BoxShape.rectangle,
+              //       borderRadius: BorderRadius.circular(kDefaultBorderRadius),
+              //       image: DecorationImage(
+              //           image: imageProvider, fit: BoxFit.cover),
+              //     ),
+              //   ),
+              //   placeholder: (context, url) =>
+              //       const CircularProgressIndicator.adaptive(),
+              //   errorWidget: (context, url, error) => const Icon(Icons.error),
+              // ),
             ),
           ),
           Container(
@@ -154,7 +198,8 @@ class _LessonPageState extends State<LessonPage> {
                             child: CupertinoButton(
                               padding: const EdgeInsets.all(0),
                               color: kPrimaryColor,
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius:
+                                  BorderRadius.circular(kDefaultBorderRadius),
                               onPressed: () {
                                 widget.pageController.previousPage(
                                     duration: const Duration(milliseconds: 400),
@@ -198,7 +243,8 @@ class _LessonPageState extends State<LessonPage> {
                       child: CupertinoButton(
                         padding: const EdgeInsets.all(0),
                         color: kPrimaryColor,
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderRadius:
+                            BorderRadius.circular(kDefaultBorderRadius),
                         onPressed: () {
                           // Add 1 to currentSubject
                           // TODO: Fix this when updating subject number has been correctly implemented

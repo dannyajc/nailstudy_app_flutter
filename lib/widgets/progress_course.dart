@@ -46,8 +46,10 @@ class _ProgressCourseState extends State<ProgressCourse> {
     DateTime expiryDate =
         DateFormat("d-M-yyyy HH:mm:ss").parse(widget.userProgress.expiryDate);
 
-    var progressPercentage = (widget.userProgress.currentLessonNumber - 1) /
-        (widget.course.lessons?.length ?? 0);
+    var progressPercentage = widget.userProgress.finished
+        ? 1.0
+        : (widget.userProgress.currentLessonNumber - 1) /
+            (widget.course.lessons?.length ?? 0);
 
     return FutureBuilder(
         future: getDownloadUrl(widget.course.image),
@@ -85,7 +87,8 @@ class _ProgressCourseState extends State<ProgressCourse> {
                             height: 70.0,
                             decoration: BoxDecoration(
                               shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius:
+                                  BorderRadius.circular(kDefaultBorderRadius),
                               image: DecorationImage(
                                   image: imageProvider, fit: BoxFit.cover),
                             ),

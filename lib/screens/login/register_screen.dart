@@ -138,7 +138,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           padding: const EdgeInsets.all(kDefaultPadding),
                           decoration: BoxDecoration(
                               color: kLightGrey,
-                              borderRadius: BorderRadius.circular(8.0)),
+                              borderRadius:
+                                  BorderRadius.circular(kDefaultBorderRadius)),
                           autocorrect: false,
                         ),
                       ),
@@ -153,7 +154,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           padding: const EdgeInsets.all(kDefaultPadding),
                           decoration: BoxDecoration(
                               color: kLightGrey,
-                              borderRadius: BorderRadius.circular(8.0)),
+                              borderRadius:
+                                  BorderRadius.circular(kDefaultBorderRadius)),
                           autocorrect: false,
                         ),
                       ),
@@ -170,7 +172,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     padding: const EdgeInsets.all(kDefaultPadding),
                     decoration: BoxDecoration(
                         color: kLightGrey,
-                        borderRadius: BorderRadius.circular(8.0)),
+                        borderRadius:
+                            BorderRadius.circular(kDefaultBorderRadius)),
                     autocorrect: false,
                   ),
                   addVerticalSpace(),
@@ -184,7 +187,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     padding: const EdgeInsets.all(kDefaultPadding),
                     decoration: BoxDecoration(
                         color: kLightGrey,
-                        borderRadius: BorderRadius.circular(8.0)),
+                        borderRadius:
+                            BorderRadius.circular(kDefaultBorderRadius)),
                     obscureText: true,
                     autocorrect: false,
                   ),
@@ -200,7 +204,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     padding: const EdgeInsets.all(kDefaultPadding),
                     decoration: BoxDecoration(
                         color: kLightGrey,
-                        borderRadius: BorderRadius.circular(8.0)),
+                        borderRadius:
+                            BorderRadius.circular(kDefaultBorderRadius)),
                     autocorrect: false,
                   ),
                   addVerticalSpace(),

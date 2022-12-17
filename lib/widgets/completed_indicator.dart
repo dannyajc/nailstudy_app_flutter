@@ -22,7 +22,8 @@ class CompletedIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: kCompletedColor, borderRadius: BorderRadius.circular(8.0)),
+          color: kCompletedColor,
+          borderRadius: BorderRadius.circular(kDefaultBorderRadius)),
       height: 25,
       child: Padding(
         padding: const EdgeInsets.symmetric(

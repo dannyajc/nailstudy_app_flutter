@@ -59,8 +59,8 @@ class _LessonPageState extends State<LessonPage> {
 
     if (widget.subject.isIntroduction) {
       path = widget.lessonType == LessonType.theory
-          ? (widget.lesson.theory.image ?? kDefaultImage)
-          : (widget.lesson.practice.image ?? kDefaultImage);
+          ? (widget.lesson.theory.image ?? "")
+          : (widget.lesson.practice.image ?? "");
     } else {
       path = widget.subject.image ?? "";
     }

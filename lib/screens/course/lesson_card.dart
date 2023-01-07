@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
@@ -31,6 +32,18 @@ class LessonCard extends StatelessWidget {
       this.finishedLesson = false,
       this.available = true})
       : super(key: key);
+
+  Future<String?> getThumbnail() async {
+    final ref = FirebaseStorage.instance.ref();
+
+    if (material.image == null) {
+      // Use lesson image as fallback
+      return lesson.image != null
+          ? ref.child(lesson.image!).getDownloadURL()
+          : null;
+    }
+    return ref.child(material.image!).getDownloadURL();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,49 +124,59 @@ class LessonCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: kDefaultPadding),
             // TODO: Change course image
-            child: CachedNetworkImage(
-              imageUrl:
-                  'https://images.unsplash.com/photo-1533158628620-7e35717d36e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2400&q=80',
-              imageBuilder: (context, imageProvider) => Container(
-                width: 80.0,
-                height: 80.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(kDefaultBorderRadius),
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
-                    colorFilter: !available
-                        ? ColorFilter.mode(
-                            Colors.black.withOpacity(0.4),
-                            BlendMode.darken,
-                          )
-                        : null,
-                  ),
-                ),
-                child: !available
-                    ? ClipRRect(
+            child: FutureBuilder(
+              future: getThumbnail(),
+              builder: ((context, snapshot) {
+                if (snapshot.hasData) {
+                  return CachedNetworkImage(
+                    imageUrl: snapshot.data.toString(),
+                    imageBuilder: (context, imageProvider) => Container(
+                      width: 80.0,
+                      height: 80.0,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
                         borderRadius:
                             BorderRadius.circular(kDefaultBorderRadius),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.0),
-                            ),
-                            child: const Icon(
-                              Icons.lock,
-                              color: kPrimaryColor,
-                              size: 30,
-                            ),
-                          ),
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                          colorFilter: !available
+                              ? ColorFilter.mode(
+                                  Colors.black.withOpacity(0.4),
+                                  BlendMode.darken,
+                                )
+                              : null,
                         ),
-                      )
-                    : null,
-              ),
-              placeholder: (context, url) =>
-                  const CircularProgressIndicator.adaptive(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
+                      ),
+                      child: !available
+                          ? ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(kDefaultBorderRadius),
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.0),
+                                  ),
+                                  child: const Icon(
+                                    Icons.lock,
+                                    color: kPrimaryColor,
+                                    size: 30,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : null,
+                    ),
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator.adaptive(),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  );
+                }
+                return const SizedBox();
+              }),
             ),
           ),
           Flexible(

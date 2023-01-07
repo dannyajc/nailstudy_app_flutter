@@ -17,9 +17,11 @@ class Lesson {
 
   static Lesson fromJson(dynamic json) {
     return Lesson(
-        name: json['name'],
-        lessonNumber: json['lessonNumber'],
-        theory: LessonMaterial.fromJson(json['theory']),
-        practice: LessonMaterial.fromJson(json['practice']));
+      name: json['name'],
+      lessonNumber: json['lessonNumber'],
+      theory: LessonMaterial.fromJson(json['theory']),
+      practice: LessonMaterial.fromJson(json['practice']),
+      image: json['image'],
+    );
   }
 }

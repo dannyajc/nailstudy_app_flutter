@@ -123,7 +123,6 @@ class LessonCard extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(right: kDefaultPadding),
-            // TODO: Change course image
             child: FutureBuilder(
               future: getThumbnail(),
               builder: ((context, snapshot) {

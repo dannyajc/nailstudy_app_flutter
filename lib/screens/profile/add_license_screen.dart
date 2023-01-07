@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nailstudy_app_flutter/constants.dart';
+import 'package:nailstudy_app_flutter/logic/courses/course_model.dart';
 import 'package:nailstudy_app_flutter/logic/courses/course_store.dart';
 import 'package:nailstudy_app_flutter/logic/user/user_store.dart';
 import 'package:nailstudy_app_flutter/screens/profile/profile_screen.dart';
 import 'package:nailstudy_app_flutter/utils/spacing.dart';
+import 'package:nailstudy_app_flutter/widgets/expandable_text.dart';
 import 'package:nailstudy_app_flutter/widgets/numpad.dart';
 import 'package:nailstudy_app_flutter/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
@@ -43,6 +46,15 @@ class _AddLicenseScreenState extends State<AddLicenseScreen> {
             baseOffset: newText.length, extentOffset: newText.length);
       }
     }
+  }
+
+  Future<String?> getThumbnail(CourseModel? course) async {
+    final ref = FirebaseStorage.instance.ref();
+
+    if (course == null || course.image.isEmpty) {
+      return null;
+    }
+    return ref.child(course.image).getDownloadURL();
   }
 
   void checkLicenseCode(String licenseCode) {
@@ -145,29 +157,38 @@ class _AddLicenseScreenState extends State<AddLicenseScreen> {
                                         padding: const EdgeInsets.only(
                                             right: kDefaultPadding),
                                         // TODO: Change course image
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                              'https://images.unsplash.com/photo-1533158628620-7e35717d36e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2400&q=80',
-                                          imageBuilder:
-                                              (context, imageProvider) =>
-                                                  Container(
-                                            width: 70.0,
-                                            height: 70.0,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.rectangle,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      kDefaultBorderRadius),
-                                              image: DecorationImage(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.cover),
-                                            ),
-                                          ),
-                                          placeholder: (context, url) =>
-                                              const CircularProgressIndicator
-                                                  .adaptive(),
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
+                                        child: FutureBuilder(
+                                          future: getThumbnail(course),
+                                          builder: ((context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              return CachedNetworkImage(
+                                                imageUrl:
+                                                    snapshot.data.toString(),
+                                                imageBuilder:
+                                                    (context, imageProvider) =>
+                                                        Container(
+                                                  width: 70.0,
+                                                  height: 70.0,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.rectangle,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            kDefaultBorderRadius),
+                                                    image: DecorationImage(
+                                                        image: imageProvider,
+                                                        fit: BoxFit.cover),
+                                                  ),
+                                                ),
+                                                placeholder: (context, url) =>
+                                                    const CircularProgressIndicator
+                                                        .adaptive(),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        const Icon(Icons.error),
+                                              );
+                                            }
+                                            return const SizedBox();
+                                          }),
                                         ),
                                       ),
                                       Flexible(
@@ -202,14 +223,21 @@ class _AddLicenseScreenState extends State<AddLicenseScreen> {
                                     ],
                                   ),
                                   addVerticalSpace(),
-                                  Text(
-                                    course?.description ?? '',
-                                    style: const TextStyle(
-                                        fontSize: kSubtitle1, color: kGrey),
-                                    textAlign: TextAlign.start,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 4,
-                                  ),
+                                  ConstrainedBox(
+                                      constraints:
+                                          const BoxConstraints(maxHeight: 50.0),
+                                      child: SingleChildScrollView(
+                                        child: Text(
+                                          course?.description
+                                                  .replaceAll('\\n', '\n') ??
+                                              "",
+                                          softWrap: true,
+                                          overflow: TextOverflow.fade,
+                                          style: const TextStyle(
+                                              fontSize: kParagraph1,
+                                              color: kGrey),
+                                        ),
+                                      )),
                                   addVerticalSpace(),
                                   PrimaryButton(
                                     label: 'Sluiten',

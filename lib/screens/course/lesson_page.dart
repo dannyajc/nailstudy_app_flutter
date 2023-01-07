@@ -137,23 +137,6 @@ class _LessonPageState extends State<LessonPage> {
                   return const SizedBox();
                 }),
               ),
-              // child: CachedNetworkImage(
-              //   imageUrl:
-              //       'https://images.unsplash.com/photo-1533158628620-7e35717d36e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2400&q=80',
-              //   imageBuilder: (context, imageProvider) => Container(
-              //     width: MediaQuery.of(context).size.width - 40,
-              //     height: 200.0,
-              //     decoration: BoxDecoration(
-              //       shape: BoxShape.rectangle,
-              //       borderRadius: BorderRadius.circular(kDefaultBorderRadius),
-              //       image: DecorationImage(
-              //           image: imageProvider, fit: BoxFit.cover),
-              //     ),
-              //   ),
-              //   placeholder: (context, url) =>
-              //       const CircularProgressIndicator.adaptive(),
-              //   errorWidget: (context, url, error) => const Icon(Icons.error),
-              // ),
             ),
           ),
           Container(
